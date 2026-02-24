@@ -1,0 +1,106 @@
+.page {
+  padding: 8px 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.petCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.petTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.petAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.petInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.petName {
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+.petMeta {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+}
+
+.petDetails {
+  display: flex;
+  gap: 16px;
+}
+
+.petDetail {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.petNotes {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  background: var(--color-bg);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.petActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.error {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,190 @@
+.page {
+  padding: 8px 0;
+}
+
+.greeting {
+  margin-bottom: 28px;
+}
+
+.greetTitle {
+  font-size: var(--font-2xl);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.greetSub {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ── SOS Banner ── */
+.sosBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-danger-light);
+  border: 1px solid rgba(220, 38, 38, 0.15);
+  border-radius: var(--radius-md);
+  margin-bottom: 28px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-danger);
+}
+
+.sosLink {
+  margin-left: auto;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--color-danger);
+}
+
+/* ── Sections ── */
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.sectionTitle {
+  font-size: var(--font-md);
+  font-weight: 600;
+}
+
+.viewAll {
+  font-size: var(--font-xs);
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+/* ── Quick Actions ── */
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quickCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.quickCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.quickIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.quickLabel {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.quickDesc {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── Two columns ── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ── Appointment rows ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apptRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.apptVet {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.apptMeta {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── Pet rows ── */
+.petRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.petAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.petName {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.petMeta {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .quickGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .quickGrid {
+    grid-template-columns: 1fr;
+  }
+}
