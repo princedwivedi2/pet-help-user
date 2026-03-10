@@ -6,6 +6,7 @@ const appointmentService = {
   store: (data) => api.post('/appointments', data),
   getSlots: (vetUuid, params) => api.get(`/appointments/slots/${vetUuid}`, { params }),
   updateStatus: (uuid, data) => api.put(`/appointments/${uuid}/status`, data),
+  endVisit: (uuid, data) => api.put(`/appointments/${uuid}/end-visit`, data),
 };
 
 export default appointmentService;

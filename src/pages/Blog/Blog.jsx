@@ -26,7 +26,7 @@ export default function Blog() {
       try {
         const res = await blogService.getCategories();
         setCategories(apiList(res?.data, 'categories'));
-      } catch (_) {}
+      } catch (err) { console.error('Failed to load blog categories:', err?.message); }
     };
     loadCats();
   }, []);
@@ -38,7 +38,7 @@ export default function Blog() {
       const raw = await execute(params);
       setPosts(apiList(raw, 'posts'));
       setMeta(apiPagination(raw));
-    } catch (_) {}
+    } catch (err) { console.error('Failed to load blog posts:', err?.message); }
   }, [execute, search, category, page]);
 
   useEffect(() => { load(); }, [load]);

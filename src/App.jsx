@@ -17,6 +17,10 @@ import Community from './pages/Community/Community';
 import CommunityPost from './pages/CommunityPost/CommunityPost';
 import Profile from './pages/Profile/Profile';
 import Notifications from './pages/Notifications/Notifications';
+import Payments from './pages/Payments/Payments';
+import Legal from './pages/Legal/Legal';
+import VetApply from './pages/VetApply/VetApply';
+import VetApplySuccess from './pages/VetApplySuccess/VetApplySuccess';
 import { useAuth } from './hooks/useAuth';
 
 function ProtectedRoute({ children }) {
@@ -31,6 +35,8 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/vet/apply" element={<VetApply />} />
+      <Route path="/vet/apply/success" element={<VetApplySuccess />} />
 
       {/* Public pages with layout */}
       <Route element={<Layout />}>
@@ -42,6 +48,7 @@ export default function App() {
         <Route path="/blog/:uuid" element={<BlogPost />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:uuid" element={<CommunityPost />} />
+        <Route path="/legal/:type" element={<Legal />} />
       </Route>
 
       {/* Protected pages with layout */}
@@ -56,6 +63,7 @@ export default function App() {
         <Route path="/sos" element={<SOS />} />
         <Route path="/pets" element={<Pets />} />
         <Route path="/appointments" element={<Appointments />} />
+        <Route path="/payments" element={<Payments />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notifications" element={<Notifications />} />
       </Route>

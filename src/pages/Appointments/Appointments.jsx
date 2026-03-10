@@ -59,7 +59,7 @@ export default function Appointments() {
     try {
       await appointmentService.updateStatus(cancelTarget.uuid, {
         status: 'cancelled',
-        cancellation_reason: cancelReason || 'Cancelled by user',
+        reason: cancelReason || 'Cancelled by user',
       });
       setCancelTarget(null);
       setCancelReason('');

@@ -149,6 +149,21 @@
   color: var(--color-text);
 }
 
+.vetCta {
+  margin-top: 20px;
+}
+
+.vetCtaLink {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.vetCtaLink:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
 /* ── Features ── */
 .features {
   padding: 64px 24px;

@@ -23,7 +23,9 @@ export default function Notifications() {
       setNotifications(apiList(raw, 'notifications'));
       const pg = apiPagination(raw);
       if (pg) setMeta(pg);
-    } catch (_) {}
+    } catch (err) {
+      console.error('Failed to load notifications:', err?.message);
+    }
   }, [execute, page]);
 
   useEffect(() => { load(); }, [load]);
@@ -33,7 +35,9 @@ export default function Notifications() {
     try {
       await notificationService.markAllAsRead();
       load();
-    } catch (_) {} finally {
+    } catch (err) {
+      console.error('Failed to mark all as read:', err?.message);
+    } finally {
       setMarking(false);
     }
   };
@@ -42,7 +46,9 @@ export default function Notifications() {
     try {
       await notificationService.markAsRead(id);
       load();
-    } catch (_) {}
+    } catch (err) {
+      console.error('Failed to mark notification as read:', err?.message);
+    }
   };
 
   return (

@@ -26,7 +26,7 @@ export default function Guides() {
       try {
         const res = await guideService.getCategories();
         setCategories(apiList(res?.data, 'categories'));
-      } catch (_) {}
+      } catch (err) { console.error('Failed to load guide categories:', err?.message); }
     };
     loadCats();
   }, []);
@@ -39,7 +39,7 @@ export default function Guides() {
       setGuides(apiList(raw, 'guides'));
       const pg = apiPagination(raw);
       if (pg) setMeta(pg);
-    } catch (_) {}
+    } catch (err) { console.error('Failed to load guides:', err?.message); }
   }, [execute, search, category, page]);
 
   useEffect(() => { load(); }, [load]);

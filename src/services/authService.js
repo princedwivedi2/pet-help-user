@@ -7,6 +7,7 @@ const authService = {
   me: () => api.get('/auth/me'),
   updateProfile: (data) => api.put('/auth/profile', data),
   changePassword: (data) => api.put('/auth/change-password', data),
+  deleteAccount: (data) => api.delete('/auth/account', { data }),
 };
 
 export default authService;

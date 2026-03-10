@@ -21,9 +21,14 @@ api.interceptors.response.use(
   (response) => response.data,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('user_token');
-      localStorage.removeItem('user_user');
-      window.location.href = '/login';
+      // Don't redirect on login/register endpoints — let the caller handle it
+      const url = error.config?.url || '';
+      const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
+      if (!isAuthEndpoint) {
+        localStorage.removeItem('user_token');
+        localStorage.removeItem('user_user');
+        window.dispatchEvent(new CustomEvent('auth:logout'));
+      }
     }
     const message =
       error.response?.data?.message || error.message || 'Something went wrong';

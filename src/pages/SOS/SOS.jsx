@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import sosService from '../../services/sosService';
+import reviewService from '../../services/reviewService';
 import petService from '../../services/petService';
 import { apiList, apiObject } from '../../utils/helpers';
 import Card from '../../components/common/Card/Card';
@@ -8,9 +9,9 @@ import FormInput from '../../components/common/FormInput/FormInput';
 import Badge from '../../components/common/Badge/Badge';
 import Loader from '../../components/common/Loader/Loader';
 import EmptyState from '../../components/common/EmptyState/EmptyState';
+import Modal from '../../components/common/Modal/Modal';
 import Icon from '../../components/common/Icon/Icon';
 import styles from './SOS.module.css';
-
 const EMERGENCY_TYPES = ['injury', 'illness', 'poisoning', 'accident', 'breathing', 'seizure', 'other'];
 
 export default function SOS() {
@@ -21,6 +22,10 @@ export default function SOS() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showReview, setShowReview] = useState(false);
+  const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
+  const [reviewSosUuid, setReviewSosUuid] = useState(null);
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -33,7 +38,9 @@ export default function SOS() {
         const sos = apiObject(sosRes.value?.data, 'sos');
         setActive(sos && sos.uuid ? sos : null);
       }
-    } catch (_) {} finally { setLoading(false); }
+    } catch (err) {
+      setError(err?.message || 'Failed to load SOS data');
+    } finally { setLoading(false); }
   };
 
   useEffect(() => { load(); }, []);
@@ -76,14 +83,40 @@ export default function SOS() {
     try {
       await sosService.updateStatus(uuid, { status: 'cancelled', resolution_notes: 'Cancelled by user' });
       load();
-    } catch (_) {}
+    } catch (err) {
+      setError(err?.message || 'Failed to cancel SOS request');
+    }
   };
 
   const handleComplete = async (uuid) => {
     try {
       await sosService.updateStatus(uuid, { status: 'completed', resolution_notes: 'Resolved' });
+      setReviewSosUuid(uuid);
+      setReviewForm({ rating: 5, comment: '' });
+      setShowReview(true);
       load();
-    } catch (_) {}
+    } catch (err) {
+      setError(err?.message || 'Failed to complete SOS request');
+    }
+  };
+
+  const handleReviewSubmit = async () => {
+    try {
+      setSubmittingReview(true);
+      setError('');
+      await reviewService.store({
+        sos_uuid: reviewSosUuid,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment,
+      });
+      setShowReview(false);
+      setReviewSosUuid(null);
+      setSuccess('Review submitted. Thank you!');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to submit review');
+    } finally {
+      setSubmittingReview(false);
+    }
   };
 
   if (loading) return <Loader center />;
@@ -172,6 +205,38 @@ export default function SOS() {
           )}
         </div>
       </div>
+
+      <Modal open={showReview} onClose={() => setShowReview(false)} title="Rate the Vet">
+        <p style={{ marginBottom: 12, fontSize: 14, color: '#666' }}>How was the emergency assistance? Leave a review for the vet.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div>
+            <label style={{ fontSize: 14, fontWeight: 500, display: 'block', marginBottom: 4 }}>Rating</label>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 24, color: star <= reviewForm.rating ? '#f59e0b' : '#d1d5db' }}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+          </div>
+          <FormInput
+            label="Comment (optional)"
+            as="textarea"
+            value={reviewForm.comment}
+            onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+            placeholder="Share your experience..."
+          />
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+            <Button variant="ghost" onClick={() => setShowReview(false)}>Skip</Button>
+            <Button onClick={handleReviewSubmit} loading={submittingReview}>Submit Review</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

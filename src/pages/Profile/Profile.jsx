@@ -11,6 +11,7 @@ import styles from './Profile.module.css';
 const TABS = [
   { key: 'profile', label: 'Profile' },
   { key: 'password', label: 'Password' },
+  { key: 'account', label: 'Account' },
 ];
 
 export default function Profile() {
@@ -21,6 +22,8 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -63,6 +66,21 @@ export default function Profile() {
     setTab(key);
     setError('');
     setSuccess('');
+  };
+
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault();
+    if (!window.confirm('Are you sure you want to permanently delete your account? This action cannot be undone.')) return;
+    try {
+      setDeleting(true);
+      setError('');
+      await authService.deleteAccount({ password: deletePassword });
+      logout();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete account');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -137,6 +155,26 @@ export default function Profile() {
                 required
               />
               <Button type="submit" loading={saving}>Update Password</Button>
+            </form>
+          </Card>
+        )}
+        {tab === 'account' && (
+          <Card>
+            <h2 className={styles.sectionTitle}>Delete Account</h2>
+            <p style={{ fontSize: 14, color: '#666', marginBottom: 16 }}>
+              Once you delete your account, all your data including pets, appointments, and reviews will be permanently removed. This action cannot be undone.
+            </p>
+            <form onSubmit={handleDeleteAccount}>
+              <FormInput
+                label="Enter your password to confirm"
+                type="password"
+                value={deletePassword}
+                onChange={(e) => setDeletePassword(e.target.value)}
+                required
+              />
+              <Button type="submit" variant="danger" loading={deleting} disabled={!deletePassword}>
+                Delete My Account
+              </Button>
             </form>
           </Card>
         )}

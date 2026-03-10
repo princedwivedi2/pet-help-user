@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import useApi from '../../hooks/useApi';
 import guideService from '../../services/guideService';
 import { apiObject } from '../../utils/helpers';
@@ -20,7 +21,7 @@ export default function GuideDetail() {
       try {
         const raw = await execute(id);
         setGuide(apiObject(raw, 'guide'));
-      } catch (_) {}
+      } catch (err) { console.error('Failed to load guide detail:', err?.message); }
     };
     load();
   }, [execute, id]);
@@ -52,7 +53,7 @@ export default function GuideDetail() {
 
       {guide.content && (
         <Card>
-          <div className={styles.content} dangerouslySetInnerHTML={{ __html: guide.content }} />
+          <div className={styles.content} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(guide.content) }} />
         </Card>
       )}
 

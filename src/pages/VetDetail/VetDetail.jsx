@@ -34,7 +34,9 @@ export default function VetDetail() {
       try {
         const raw = await execute(uuid);
         setVet(apiObject(raw, 'vet'));
-      } catch (_) {}
+      } catch (err) {
+        console.error('Failed to load vet details:', err?.message);
+      }
     };
     load();
   }, [execute, uuid]);
@@ -47,7 +49,9 @@ export default function VetDetail() {
     try {
       const petRes = await petService.getAll();
       setPets(apiList(petRes?.data, 'pets'));
-    } catch (_) {}
+    } catch (err) {
+      console.error('Failed to load pets:', err?.message);
+    }
   };
 
   const fetchSlots = async (date) => {
@@ -55,8 +59,9 @@ export default function VetDetail() {
     try {
       const res = await appointmentService.getSlots(uuid, { date });
       setSlots(apiList(res?.data, 'slots'));
-    } catch (_) {
+    } catch (err) {
       setSlots([]);
+      console.error('Failed to load slots:', err?.message);
     }
   };
 
@@ -114,12 +119,8 @@ export default function VetDetail() {
             {vet.is_verified && <Badge variant="success">Verified</Badge>}
             {vet.is_emergency_available && <Badge variant="danger">Emergency Available</Badge>}
             {vet.is_24_hours && <Badge variant="info">24 Hours</Badge>}
-            {vet.rating > 0 && <Badge>⭐ {vet.rating} ({vet.review_count || 0})</Badge>}
-            {vet.city && (
-              <span className={styles.city}>
-                <Icon name="location" size={13} />
-                {vet.city}
-              </span>
+            {vet.distance_km != null && (
+              <Badge>📍 {Number(vet.distance_km).toFixed(1)} km</Badge>
             )}
           </div>
         </div>
@@ -149,7 +150,7 @@ export default function VetDetail() {
         {vet.address && (
           <Card>
             <h3 className={styles.cardTitle}>Location</h3>
-            <p className={styles.bio}>{vet.address}{vet.city ? `, ${vet.city}` : ''}{vet.state ? `, ${vet.state}` : ''}</p>
+            <p className={styles.bio}>{vet.address}{vet.state ? `, ${vet.state}` : ''}{vet.postal_code ? ` - ${vet.postal_code}` : ''}</p>
           </Card>
         )}
       </div>

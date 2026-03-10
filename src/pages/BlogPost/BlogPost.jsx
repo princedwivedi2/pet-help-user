@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import useApi from '../../hooks/useApi';
 import blogService from '../../services/blogService';
 import { useAuth } from '../../hooks/useAuth';
@@ -83,7 +84,7 @@ export default function BlogPost() {
           )}
         </div>
 
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className={styles.content} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
 
         <div className={styles.actions}>
           <button className={`${styles.likeBtn} ${liked ? styles.liked : ''}`} onClick={handleLike}>

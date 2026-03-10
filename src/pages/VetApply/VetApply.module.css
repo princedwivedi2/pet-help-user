@@ -1,0 +1,680 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--color-bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 580px;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.logoMark {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-sm);
+  font-weight: 700;
+}
+
+.logoText {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.title {
+  font-size: var(--font-2xl);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── Error Banner ── */
+.error {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  margin-bottom: 24px;
+}
+
+/* ── Form ── */
+.form {
+  margin-bottom: 24px;
+}
+
+.stepHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.stepBadge {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: var(--font-xs);
+  font-weight: 600;
+}
+
+.stepTitle {
+  font-size: var(--font-lg);
+  margin: 0;
+}
+
+/* ── Sections ── */
+.section {
+  border: none;
+  padding: 0;
+  margin: 0 0 28px 0;
+}
+
+.sectionTitle {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-light);
+  display: block;
+  width: 100%;
+}
+
+.sectionHint {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* ── Grid ── */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+/* ── Chip Selectors ── */
+.chipField {
+  margin-bottom: 16px;
+}
+
+.chipLabel {
+  display: block;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.required {
+  color: var(--color-danger);
+}
+
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-size: var(--font-xs);
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.chipActive {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.fieldError {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--color-danger);
+  margin-top: 6px;
+}
+
+.locationActions {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.slotList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.slotItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+}
+
+.checkboxRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 14px;
+}
+
+.checkboxRow input {
+  margin-top: 2px;
+}
+
+.stepActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ── Progress Bar ── */
+.progressContainer {
+  margin-bottom: 28px;
+}
+
+.progressTrack {
+  height: 4px;
+  background: var(--color-border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.progressSteps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex: 1;
+}
+
+.progressDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.progressStepActive .progressDot {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.progressStepDone .progressDot {
+  border-color: var(--color-success, #22c55e);
+  background: var(--color-success, #22c55e);
+  color: #fff;
+}
+
+.progressLabel {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 72px;
+}
+
+.progressStepActive .progressLabel {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.progressStepDone .progressLabel {
+  color: var(--color-success, #22c55e);
+}
+
+/* ── Photo Section ── */
+.photoSection {
+  margin-bottom: 20px;
+}
+
+.photoPreviewWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.photoPreview {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary-light);
+}
+
+.photoRemove {
+  background: none;
+  border: none;
+  color: var(--color-danger);
+  font-size: var(--font-sm);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.photoSuccess {
+  font-size: var(--font-sm);
+  color: var(--color-success, #22c55e);
+  font-weight: 500;
+}
+
+.photoActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ── Camera ── */
+.cameraWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cameraVideo {
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--radius-lg, 12px);
+  background: #000;
+}
+
+.cameraActions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ── Schedule ── */
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scheduleRow {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.scheduleRowClosed {
+  opacity: 0.6;
+  background: var(--color-bg);
+}
+
+.scheduleDayHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scheduleDayName {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 90px;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.toggleInput {
+  display: none;
+}
+
+.toggleSwitch {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--color-border);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.toggleSwitch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.toggleOn {
+  background: var(--color-primary);
+}
+
+.toggleOn::after {
+  transform: translateX(16px);
+}
+
+.toggleText {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  min-width: 42px;
+}
+
+.scheduleTimeRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.scheduleTimeField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scheduleTimeLabel {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.scheduleTimeInput {
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.scheduleNote {
+  font-size: var(--font-sm);
+  color: var(--color-warning, #f59e0b);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── Document Upload Blocks ── */
+.docUploadBlock {
+  margin-bottom: 20px;
+  padding: 14px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.docUploadLabel {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+/* ── Review Section ── */
+.reviewBlock {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.reviewHeader h4 {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.reviewPhoto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary-light);
+}
+
+.reviewMissing {
+  font-size: var(--font-sm);
+  color: var(--color-danger);
+  font-style: italic;
+}
+
+.reviewSchedule {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewScheduleRow {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.reviewNote {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.reviewDocs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reviewDocRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-sm);
+}
+
+.reviewDocCount {
+  color: var(--color-success, #22c55e);
+  font-weight: 500;
+}
+
+/* ── Validation Summary ── */
+.validationSummary {
+  background: var(--color-danger-light);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.validationTitle {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-danger);
+  margin: 0 0 8px 0;
+}
+
+.validationList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.validationList li {
+  margin-bottom: 4px;
+}
+
+.validationLink {
+  background: none;
+  border: none;
+  color: var(--color-danger);
+  text-decoration: underline;
+  font-size: var(--font-sm);
+  cursor: pointer;
+  padding: 2px 0;
+  text-align: left;
+}
+
+.validationLink:hover {
+  opacity: 0.8;
+}
+
+.validationStep {
+  font-size: var(--font-xs);
+  opacity: 0.7;
+}
+
+/* ── Success Banner ── */
+.successBanner {
+  background: color-mix(in srgb, var(--color-success, #22c55e) 10%, transparent);
+  color: var(--color-success, #22c55e);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .reviewGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: var(--font-xl);
+  }
+
+  .progressLabel {
+    display: none;
+  }
+
+  .progressDot {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .scheduleTimeRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

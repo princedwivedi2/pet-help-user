@@ -38,6 +38,9 @@ export default function Landing() {
             <Link to="/register" className={styles.ctaPrimary}>Get started free</Link>
             <Link to="/find-vets" className={styles.ctaSecondary}>Find vets</Link>
           </div>
+          <div className={styles.vetCta}>
+            <Link to="/vet/apply" className={styles.vetCtaLink}>Are you a veterinarian? Join as Vet</Link>
+          </div>
         </div>
       </section>
 

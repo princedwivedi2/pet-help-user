@@ -29,14 +29,14 @@ export default function CommunityPost() {
     try {
       const raw = await execute(uuid);
       setPost(apiObject(raw, 'post'));
-    } catch (_) {}
+    } catch (err) { console.error('Failed to load community post:', err?.message); }
   };
 
   const loadReplies = async () => {
     try {
       const res = await communityService.getReplies(uuid, { per_page: 50 });
       setReplies(apiList(res?.data, 'replies'));
-    } catch (_) {}
+    } catch (err) { console.error('Failed to load replies:', err?.message); }
   };
 
   useEffect(() => { load(); loadReplies(); }, [uuid]);
@@ -47,7 +47,7 @@ export default function CommunityPost() {
       await communityService.vote({ votable_type: type, votable_uuid: itemUuid });
       load();
       loadReplies();
-    } catch (_) {}
+    } catch (err) { console.error('Failed to submit vote:', err?.message); }
   };
 
   const handleReply = async (e) => {
@@ -58,7 +58,7 @@ export default function CommunityPost() {
       await communityService.storeReply(uuid, { content: replyText });
       setReplyText('');
       loadReplies();
-    } catch (_) {} finally {
+    } catch (err) { console.error('Failed to submit reply:', err?.message); } finally {
       setReplying(false);
     }
   };
@@ -72,7 +72,7 @@ export default function CommunityPost() {
     try {
       await communityService.report({ reportable_type: type, reportable_uuid: itemUuid, reason });
       alert('Report submitted');
-    } catch (_) {}
+    } catch (err) { console.error('Failed to submit report:', err?.message); }
   };
 
   const handleDelete = async () => {
@@ -87,7 +87,7 @@ export default function CommunityPost() {
         loadReplies();
       }
       setDeleteTarget(null);
-    } catch (_) {} finally {
+    } catch (err) { console.error('Failed to delete item:', err?.message); } finally {
       setDeleting(false);
     }
   };

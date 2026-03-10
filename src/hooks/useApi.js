@@ -10,8 +10,7 @@ export default function useApi(serviceMethod) {
       try {
         setLoading(true);
         setError(null);
-        const response = await serviceMethod(...args);
-        const result = response.data;
+        const result = await serviceMethod(...args);
         setData(result);
         return result;
       } catch (err) {

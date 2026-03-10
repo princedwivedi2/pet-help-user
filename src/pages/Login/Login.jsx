@@ -66,6 +66,9 @@ export default function Login() {
           Don't have an account?{' '}
           <Link to="/register" className={styles.link}>Sign up</Link>
         </p>
+        <p className={styles.vetFooter}>
+          <Link to="/vet/apply" className={styles.link}>Join as Vet</Link>
+        </p>
       </div>
     </div>
   );

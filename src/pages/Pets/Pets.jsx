@@ -31,7 +31,9 @@ export default function Pets() {
     try {
       const raw = await execute();
       setPets(apiList(raw, 'pets'));
-    } catch (_) {}
+    } catch (err) {
+      setError(err?.message || 'Failed to load pets');
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -79,7 +81,9 @@ export default function Pets() {
       await petService.delete(deleteTarget.id);
       setDeleteTarget(null);
       load();
-    } catch (_) {} finally {
+    } catch (err) {
+      setError(err?.message || 'Failed to delete pet');
+    } finally {
       setDeleting(false);
     }
   };
