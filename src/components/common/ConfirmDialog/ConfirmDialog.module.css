@@ -2,11 +2,11 @@
   color: var(--color-text-secondary);
   font-size: var(--font-base);
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
 }

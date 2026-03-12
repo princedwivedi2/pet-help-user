@@ -1,43 +1,47 @@
 .spinner {
   border-radius: 50%;
   border-style: solid;
-  border-color: var(--color-border);
+  border-color: var(--color-border-light);
   border-top-color: var(--color-primary);
-  animation: spin 0.7s linear infinite;
+  animation: spin 0.65s linear infinite;
 }
 
 .sm {
-  width: 18px;
-  height: 18px;
-  border-width: 2px;
+  width: 20px;
+  height: 20px;
+  border-width: 2.5px;
 }
 
 .md {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-width: 3px;
 }
 
 .lg {
-  width: 40px;
-  height: 40px;
-  border-width: 3px;
+  width: 48px;
+  height: 48px;
+  border-width: 3.5px;
 }
 
 .center {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 0;
+  padding: 56px 0;
   width: 100%;
+  gap: 14px;
 }
 
 .fullPage {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 60vh;
   width: 100%;
+  gap: 14px;
 }
 
 @keyframes spin {

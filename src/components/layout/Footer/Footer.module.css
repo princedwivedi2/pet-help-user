@@ -1,5 +1,5 @@
 .footer {
-  background: var(--color-surface);
+  background: var(--color-surface-warm);
   border-top: 1px solid var(--color-border-light);
   margin-top: auto;
 }
@@ -7,7 +7,7 @@
 .inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,13 +16,14 @@
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .name {
-  font-weight: 600;
+  font-weight: 800;
   font-size: var(--font-sm);
   color: var(--color-text);
+  letter-spacing: -0.01em;
 }
 
 .copy {
@@ -32,17 +33,18 @@
 
 .links {
   display: flex;
-  gap: 20px;
+  gap: 24px;
 }
 
 .links a {
   font-size: var(--font-sm);
   color: var(--color-text-muted);
+  font-weight: 500;
   transition: color var(--transition-fast);
 }
 
 .links a:hover {
-  color: var(--color-text);
+  color: var(--color-primary);
 }
 
 @media (max-width: 640px) {
@@ -56,5 +58,11 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    display: none;
   }
 }

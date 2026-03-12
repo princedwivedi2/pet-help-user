@@ -1,20 +1,55 @@
 .page {
-  padding: 8px 0;
+  padding: 0;
 }
 
-.greeting {
+/* ── Hero Banner ── */
+.heroBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 28px;
+  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #fff1e6 100%);
+  border-radius: var(--radius-2xl);
   margin-bottom: 28px;
+  overflow: hidden;
+  position: relative;
 }
 
-.greetTitle {
-  font-size: var(--font-2xl);
-  font-weight: 600;
-  margin-bottom: 4px;
+.heroContent {
+  flex: 1;
 }
 
-.greetSub {
+.heroGreeting {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.heroName {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.heroSub {
   font-size: var(--font-sm);
   color: var(--color-text-secondary);
+}
+
+.heroIllustration {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+
+.heroIllustration svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* ── SOS Banner ── */
@@ -22,26 +57,170 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
-  background: var(--color-danger-light);
-  border: 1px solid rgba(220, 38, 38, 0.15);
-  border-radius: var(--radius-md);
-  margin-bottom: 28px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border: 1.5px solid #fecaca;
+  border-radius: var(--radius-xl);
+  margin-bottom: 24px;
   font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--color-danger);
+  font-weight: 600;
+  color: #991b1b;
+  position: relative;
+}
+
+.sosPulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
 }
 
 .sosLink {
   margin-left: auto;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+/* ── Pet Story Circles ── */
+.petStories {
+  margin-bottom: 28px;
+}
+
+.storiesRow {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.storiesRow::-webkit-scrollbar {
+  display: none;
+}
+
+.storyItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.storyCircle {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 3px var(--color-primary);
+  transition: transform 0.2s;
+}
+
+.storyCircle:hover {
+  transform: scale(1.08);
+}
+
+.storyImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.storyAdd {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.storyAdd:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.storyName {
+  font-size: 11px;
   font-weight: 600;
-  text-decoration: underline;
-  color: var(--color-danger);
+  max-width: 62px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ── Quick Actions Grid (round icons) ── */
+.actionsSection {
+  margin-bottom: 32px;
+}
+
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px 4px;
+}
+
+.actionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+  border-radius: var(--radius-xl);
+  transition: background 0.2s;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.actionItem:hover {
+  background: var(--color-surface-warm);
+}
+
+.actionCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.actionItem:hover .actionCircle {
+  transform: scale(1.1);
+}
+
+.actionLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-text-secondary);
 }
 
 /* ── Sections ── */
 .section {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .sectionHead {
@@ -53,138 +232,202 @@
 
 .sectionTitle {
   font-size: var(--font-md);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .viewAll {
   font-size: var(--font-xs);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-primary);
 }
 
-.viewAll:hover {
-  text-decoration: underline;
-}
-
-/* ── Quick Actions ── */
-.quickGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.quickCard {
+/* ── Appointment Carousel ── */
+.carouselRow {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carouselRow::-webkit-scrollbar {
+  display: none;
+}
+
+.apptCard {
+  flex-shrink: 0;
+  width: 220px;
+  padding: 18px;
   background: var(--color-surface);
   border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: all 0.25s;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.04);
+}
+
+.apptCard:hover {
+  box-shadow: 0 6px 20px rgba(28, 25, 23, 0.08);
+  transform: translateY(-2px);
+}
+
+.apptTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.apptIcon {
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-lg);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.quickCard:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-xs);
-}
-
-.quickIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
   background: var(--color-primary-light);
   color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-
-.quickLabel {
-  font-size: var(--font-sm);
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-
-.quickDesc {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-}
-
-/* ── Two columns ── */
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-/* ── Appointment rows ── */
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.apptRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .apptVet {
   font-size: var(--font-sm);
-  font-weight: 500;
-  margin-bottom: 2px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.apptMeta {
+.apptTime {
   font-size: var(--font-xs);
   color: var(--color-text-muted);
 }
 
-/* ── Pet rows ── */
-.petRow {
+/* ── Empty appointment card ── */
+.emptyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 20px;
+  background: var(--color-surface-warm);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.emptyIllustration {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+}
+
+.emptyIllustration svg {
+  width: 100%;
+  height: 100%;
+}
+
+.emptyText {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.emptyLink {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ── Pet List (card-style) ── */
+.petList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.petCard {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  transition: all 0.2s;
+}
+
+.petCard:hover {
+  background: var(--color-surface-warm);
 }
 
 .petAvatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+  color: #8b5cf6;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.petName {
-  font-size: var(--font-sm);
-  font-weight: 500;
+.petImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.petMeta {
+.petInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.petName {
+  font-size: var(--font-sm);
+  font-weight: 700;
+}
+
+.petBreed {
   font-size: var(--font-xs);
   color: var(--color-text-muted);
 }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .quickGrid {
-    grid-template-columns: 1fr 1fr;
+  .heroBanner {
+    padding: 24px 20px;
   }
 
-  .grid2 {
-    grid-template-columns: 1fr;
+  .heroName {
+    font-size: 1.5rem;
+  }
+
+  .heroIllustration {
+    width: 80px;
+    height: 80px;
+  }
+
+  .actionsGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .quickGrid {
-    grid-template-columns: 1fr;
+  .heroBanner {
+    padding: 20px 16px;
+  }
+
+  .heroIllustration {
+    width: 70px;
+    height: 70px;
+  }
+
+  .actionCircle {
+    width: 46px;
+    height: 46px;
   }
 }

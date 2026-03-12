@@ -1,12 +1,12 @@
 .wrapper {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .iconWrap {
   position: absolute;
-  left: 14px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--color-text-muted);
@@ -16,20 +16,25 @@
 
 .input {
   width: 100%;
-  padding: 10px 36px 10px 40px;
+  padding: 11px 40px 11px 44px;
   font-size: var(--font-base);
   font-family: inherit;
   color: var(--color-text);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+.input:focus ~ .iconWrap,
+.input:focus + .iconWrap {
+  color: var(--color-primary);
 }
 
 .input::placeholder {
@@ -38,11 +43,11 @@
 
 .clear {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,6 +57,6 @@
 }
 
 .clear:hover {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }

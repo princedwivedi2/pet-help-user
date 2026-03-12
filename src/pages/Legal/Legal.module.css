@@ -1,9 +1,9 @@
 .page { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-.title { font-size: 1.75rem; font-weight: 700; margin-bottom: 2rem; }
-.content { line-height: 1.7; color: var(--text-secondary); }
-.h2 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
-.h3 { font-size: 1.05rem; font-weight: 600; margin: 1rem 0 0.5rem; color: var(--text-primary); }
+.title { font-size: 1.75rem; font-weight: 800; margin-bottom: 2rem; letter-spacing: -0.01em; }
+.content { line-height: 1.8; color: var(--color-text-secondary); }
+.h2 { font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.75rem; color: var(--color-text); }
+.h3 { font-size: 1.05rem; font-weight: 700; margin: 1rem 0 0.5rem; color: var(--color-text); }
 .listItem { padding-left: 1rem; margin: 0.3rem 0; }
-.links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 1.5rem; flex-wrap: wrap; }
-.link { color: var(--primary); text-decoration: none; font-weight: 500; }
+.links { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border-light); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.link { color: var(--color-primary); text-decoration: none; font-weight: 600; }
 .link:hover { text-decoration: underline; }

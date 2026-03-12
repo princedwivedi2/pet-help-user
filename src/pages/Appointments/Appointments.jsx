@@ -17,16 +17,24 @@ import styles from './Appointments.module.css';
 const TABS = [
   { key: 'all', label: 'All' },
   { key: 'pending', label: 'Pending' },
+  { key: 'accepted', label: 'Accepted' },
   { key: 'confirmed', label: 'Confirmed' },
+  { key: 'in_progress', label: 'In Progress' },
   { key: 'completed', label: 'Completed' },
+  { key: 'rejected', label: 'Rejected' },
   { key: 'cancelled', label: 'Cancelled' },
 ];
 
 const STATUS_VARIANT = {
   pending: 'warning',
+  accepted: 'info',
+  rejected: 'danger',
   confirmed: 'success',
+  in_progress: 'primary',
   completed: 'default',
   cancelled: 'danger',
+  cancelled_by_user: 'danger',
+  cancelled_by_vet: 'danger',
 };
 
 export default function Appointments() {
@@ -57,8 +65,7 @@ export default function Appointments() {
     if (!cancelTarget) return;
     setCancelling(true);
     try {
-      await appointmentService.updateStatus(cancelTarget.uuid, {
-        status: 'cancelled',
+      await appointmentService.cancel(cancelTarget.uuid, {
         reason: cancelReason || 'Cancelled by user',
       });
       setCancelTarget(null);
@@ -101,7 +108,7 @@ export default function Appointments() {
                   </div>
                   <div className={styles.apptSide}>
                     <Badge variant={STATUS_VARIANT[appt.status] || 'default'}>{appt.status}</Badge>
-                    {(appt.status === 'pending' || appt.status === 'confirmed') && (
+                    {(appt.status === 'pending' || appt.status === 'accepted' || appt.status === 'confirmed') && (
                       <Button size="sm" variant="ghost" onClick={() => { setCancelTarget(appt); setCancelReason(''); }}>Cancel</Button>
                     )}
                   </div>

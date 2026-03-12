@@ -6,13 +6,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .title {
   font-size: var(--font-xl);
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
@@ -29,18 +30,18 @@
 .petCard {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .petTop {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .petAvatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-full);
   background: var(--color-primary-light);
   color: var(--color-primary);
@@ -57,7 +58,7 @@
 
 .petName {
   font-size: var(--font-sm);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .petMeta {
@@ -78,10 +79,10 @@
 .petNotes {
   font-size: var(--font-xs);
   color: var(--color-text-secondary);
-  line-height: 1.5;
-  background: var(--color-bg);
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
+  line-height: 1.6;
+  background: var(--color-surface-warm);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
 }
 
 .petActions {
@@ -92,10 +93,11 @@
 
 .error {
   background: var(--color-danger-light);
-  color: var(--color-danger);
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
   font-size: var(--font-sm);
+  font-weight: 500;
   margin-bottom: 16px;
 }
 

@@ -1,29 +1,29 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 7px;
+  margin-bottom: 18px;
 }
 
 .label {
   font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--color-text-secondary);
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .required {
-  color: var(--color-danger);
+  color: var(--color-primary);
 }
 
 .input {
   width: 100%;
-  padding: 10px 14px;
+  padding: 11px 16px;
   font-size: var(--font-base);
   font-family: inherit;
   color: var(--color-text);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   appearance: none;
@@ -31,13 +31,13 @@
 
 .input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.08);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
 }
 
 .input:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-  background: var(--color-bg);
+  background: var(--color-surface-warm);
 }
 
 .input::placeholder {
@@ -53,8 +53,8 @@
 .select {
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  background-position: right 14px center;
+  padding-right: 40px;
 }
 
 .inputError {
@@ -68,4 +68,5 @@
 .error {
   font-size: var(--font-xs);
   color: var(--color-danger);
+  font-weight: 500;
 }

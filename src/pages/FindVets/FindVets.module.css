@@ -3,13 +3,14 @@
 }
 
 .header {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .title {
   font-size: var(--font-xl);
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
@@ -21,19 +22,19 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .sectionStack {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  margin-top: 18px;
+  gap: 32px;
+  margin-top: 20px;
 }
 
 .sectionTitle {
   font-size: var(--font-lg);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 2px;
 }
 
@@ -55,8 +56,8 @@
 }
 
 .vetAvatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-full);
   background: var(--color-primary-light);
   color: var(--color-primary);
@@ -73,8 +74,8 @@
 
 .vetName {
   font-size: var(--font-sm);
-  font-weight: 600;
-  margin-bottom: 2px;
+  font-weight: 700;
+  margin-bottom: 3px;
 }
 
 .vetSpec {
@@ -101,7 +102,7 @@
 
 .fee {
   font-size: var(--font-xs);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-secondary);
 }
 

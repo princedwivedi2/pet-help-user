@@ -6,14 +6,14 @@
 
 .main {
   flex: 1;
-  padding: 32px 24px;
+  padding: 36px var(--content-padding);
   max-width: var(--max-width);
   width: 100%;
   margin: 0 auto;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .main {
-    padding: 24px 16px;
+    padding: 20px 16px 100px;
   }
 }

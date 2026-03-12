@@ -1,86 +1,173 @@
+/* ── Split-screen layout ── */
 .page {
   min-height: 100vh;
   display: flex;
+}
+
+/* ── Left: Illustration panel ── */
+.illustrationPanel {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #fff1e6 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 48px;
+}
+
+.illustrationPanel::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -15%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.illustrationPanel::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.illustrationContent {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+}
+
+.illustration {
+  width: 280px;
+  height: auto;
+  margin-bottom: 32px;
+}
+
+.illustrationTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.illustrationDesc {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.trustBadges {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.badgeNum {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+}
+
+/* ── Right: Form panel ── */
+.formPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
   background: var(--color-bg);
 }
 
-.card {
+.formInner {
   width: 100%;
   max-width: 400px;
-  background: var(--color-surface);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-sm);
-  padding: 40px 32px;
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 28px;
 }
 
 .logoMark {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-md);
-  background: var(--color-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-warm);
   color: var(--color-text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-sm);
-  font-weight: 700;
+  font-size: var(--font-base);
+  font-weight: 800;
+  box-shadow: 0 2px 12px rgba(249, 115, 22, 0.3);
 }
 
 .logoText {
-  font-size: var(--font-lg);
-  font-weight: 700;
+  font-size: var(--font-xl);
+  font-weight: 800;
   color: var(--color-text);
 }
 
 .title {
-  font-size: var(--font-xl);
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-text);
 }
 
 .subtitle {
   font-size: var(--font-sm);
   color: var(--color-text-muted);
+  line-height: 1.5;
 }
 
 .error {
   background: var(--color-danger-light);
-  color: var(--color-danger);
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
   font-size: var(--font-sm);
-  margin-bottom: 20px;
+  font-weight: 500;
+  margin-bottom: 22px;
 }
 
 .form {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .footer {
-  text-align: center;
   font-size: var(--font-sm);
   color: var(--color-text-muted);
 }
 
 .link {
   color: var(--color-primary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .link:hover {
@@ -88,14 +175,28 @@
 }
 
 .vetFooter {
-  text-align: center;
   font-size: var(--font-sm);
   color: var(--color-text-muted);
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
-@media (max-width: 480px) {
-  .card {
-    padding: 32px 20px;
+/* ── Mobile: stack, hide illustration ── */
+@media (max-width: 768px) {
+  .illustrationPanel {
+    display: none;
+  }
+
+  .formPanel {
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  .header {
+    text-align: center;
+  }
+
+  .footer,
+  .vetFooter {
+    text-align: center;
   }
 }

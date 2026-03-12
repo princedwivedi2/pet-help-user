@@ -1,9 +1,9 @@
 .card {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-xs);
-  transition: box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
 }
 
 .card.clickable {
@@ -11,7 +11,8 @@
 }
 
 .card.clickable:hover {
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 .noPad .body {
@@ -19,35 +20,41 @@
 }
 
 .header {
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--color-border-light);
 }
 
 .heading {
   font-size: var(--font-md);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
 }
 
 .body {
-  padding: 20px;
+  padding: 22px;
 }
 
 .stat {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-xs);
-  padding: 20px;
+  box-shadow: var(--shadow-card);
+  padding: 22px;
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
+  transition: all var(--transition-base);
+}
+
+.stat:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 .statIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-lg);
   background: var(--color-primary-light);
   color: var(--color-primary);
   display: flex;
@@ -59,17 +66,20 @@
 .statBody {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .statLabel {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
 }
 
 .statValue {
-  font-size: var(--font-xl);
-  font-weight: 700;
+  font-size: var(--font-2xl);
+  font-weight: 800;
   color: var(--color-text);
 }
 
