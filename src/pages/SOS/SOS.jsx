@@ -14,6 +14,16 @@ import Icon from '../../components/common/Icon/Icon';
 import styles from './SOS.module.css';
 const EMERGENCY_TYPES = ['injury', 'illness', 'poisoning', 'accident', 'breathing', 'seizure', 'other'];
 
+const FIRST_AID_TIPS = {
+  injury: ['Apply gentle pressure with a clean cloth to stop bleeding.', 'Do not try to remove embedded objects.', 'Keep the pet calm and restrict movement.'],
+  illness: ['Keep the pet comfortable and warm.', 'Note any symptoms (vomiting, diarrhea, lethargy).', 'Do not give human medications.'],
+  poisoning: ['Do NOT induce vomiting unless advised by a vet.', 'Try to identify what was ingested and the quantity.', 'Keep the packaging or substance sample if possible.'],
+  accident: ['Do not move the pet if you suspect spinal injury.', 'Stabilize any visible fractures with a makeshift splint.', 'Keep the pet warm to prevent shock.'],
+  breathing: ['Keep the airway clear — gently remove visible obstructions.', 'Position the pet on their side with neck extended.', 'Do not restrict the chest area.'],
+  seizure: ['Do not restrain the pet during a seizure.', 'Remove nearby objects that could cause injury.', 'Time the seizure — note duration for the vet.'],
+  other: ['Keep the pet calm and in a safe space.', 'Note all symptoms and when they started.', 'Have your pet\'s medical records ready if available.'],
+};
+
 export default function SOS() {
   const [pets, setPets] = useState([]);
   const [active, setActive] = useState(null);
@@ -81,7 +91,7 @@ export default function SOS() {
 
   const handleCancel = async (uuid) => {
     try {
-      await sosService.updateStatus(uuid, { status: 'cancelled', resolution_notes: 'Cancelled by user' });
+      await sosService.updateStatus(uuid, { status: 'sos_cancelled', resolution_notes: 'Cancelled by user' });
       load();
     } catch (err) {
       setError(err?.message || 'Failed to cancel SOS request');
@@ -90,7 +100,7 @@ export default function SOS() {
 
   const handleComplete = async (uuid) => {
     try {
-      await sosService.updateStatus(uuid, { status: 'completed', resolution_notes: 'Resolved' });
+      await sosService.updateStatus(uuid, { status: 'sos_completed', resolution_notes: 'Resolved' });
       setReviewSosUuid(uuid);
       setReviewForm({ rating: 5, comment: '' });
       setShowReview(true);
@@ -191,6 +201,8 @@ export default function SOS() {
                   <div className={styles.alertDesc}>{active.description}</div>
                   {active.emergency_type && <Badge variant="warning">{active.emergency_type}</Badge>}
                   <Badge variant="danger">{active.status || 'Active'}</Badge>
+                  {active.vet?.vet_name && <div style={{ marginTop: 8, fontSize: 14, color: '#16a34a', fontWeight: 500 }}>Vet: {active.vet.vet_name}</div>}
+                  {active.response_type && <div style={{ marginTop: 4, fontSize: 13, color: '#6b7280' }}>Response: {active.response_type.replace(/_/g, ' ')}</div>}
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
                   <Button size="sm" variant="ghost" onClick={() => handleComplete(active.uuid)}>
@@ -201,6 +213,14 @@ export default function SOS() {
                   </Button>
                 </div>
               </div>
+              {active.emergency_type && FIRST_AID_TIPS[active.emergency_type] && (
+                <div style={{ marginTop: 16, padding: '12px 14px', background: '#fff7ed', borderRadius: 10, border: '1px solid #fed7aa' }}>
+                  <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: '#c2410c' }}>First Aid Tips</div>
+                  <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: '#9a3412', lineHeight: 1.7 }}>
+                    {FIRST_AID_TIPS[active.emergency_type].map((tip, i) => <li key={i}>{tip}</li>)}
+                  </ul>
+                </div>
+              )}
             </Card>
           )}
         </div>

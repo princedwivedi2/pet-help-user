@@ -12,6 +12,8 @@ import Pagination from '../../components/common/Pagination/Pagination';
 import Button from '../../components/common/Button/Button';
 import Modal from '../../components/common/Modal/Modal';
 import FormInput from '../../components/common/FormInput/FormInput';
+import PaymentModal from '../../components/PaymentModal/PaymentModal';
+import { PAYMENT_STATUS } from '../../utils/constants';
 import styles from './Appointments.module.css';
 
 const TABS = [
@@ -46,6 +48,7 @@ export default function Appointments() {
   const [cancelTarget, setCancelTarget] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelling, setCancelling] = useState(false);
+  const [payTarget, setPayTarget] = useState(null);
 
   const load = useCallback(async () => {
     try {
@@ -108,6 +111,17 @@ export default function Appointments() {
                   </div>
                   <div className={styles.apptSide}>
                     <Badge variant={STATUS_VARIANT[appt.status] || 'default'}>{appt.status}</Badge>
+                    {appt.payment_status && (
+                      <Badge variant={PAYMENT_STATUS[appt.payment_status]?.variant || 'default'} size="sm">
+                        {PAYMENT_STATUS[appt.payment_status]?.label || appt.payment_status}
+                      </Badge>
+                    )}
+                    {appt.appointment_type && (
+                      <span style={{ fontSize: 12, color: '#6b7280' }}>{appt.appointment_type.replace(/_/g, ' ')}</span>
+                    )}
+                    {(appt.status === 'confirmed' || appt.status === 'accepted') && appt.payment_status !== 'paid' && (
+                      <Button size="sm" onClick={() => setPayTarget(appt)}>Pay Now</Button>
+                    )}
                     {(appt.status === 'pending' || appt.status === 'accepted' || appt.status === 'confirmed') && (
                       <Button size="sm" variant="ghost" onClick={() => { setCancelTarget(appt); setCancelReason(''); }}>Cancel</Button>
                     )}
@@ -137,6 +151,16 @@ export default function Appointments() {
           <Button variant="danger" onClick={handleCancel} loading={cancelling}>Yes, Cancel</Button>
         </div>
       </Modal>
+
+      <PaymentModal
+        open={!!payTarget}
+        onClose={() => setPayTarget(null)}
+        payableType="appointment"
+        payableUuid={payTarget?.uuid}
+        amount={payTarget?.fee || payTarget?.consultation_fee || 500}
+        vetName={payTarget?.vet_profile?.clinic_name || payTarget?.vet_profile?.vet_name}
+        onSuccess={() => { setPayTarget(null); load(); }}
+      />
     </div>
   );
 }

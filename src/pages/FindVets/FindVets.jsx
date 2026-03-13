@@ -109,6 +109,9 @@ export default function FindVets() {
               <div className={styles.vetMeta}>
                 {vet.is_emergency_available && <Badge variant="danger">Emergency</Badge>}
                 {vet.is_verified && <Badge variant="success">Verified</Badge>}
+                {Array.isArray(vet.consultation_types) && vet.consultation_types.length > 0 && (
+                  <span className={styles.fee} style={{ fontSize: 11 }}>{vet.consultation_types.map(t => t.replace(/_/g, ' ')).join(' · ')}</span>
+                )}
                 {vet.avg_rating != null && <span className={styles.fee}>{Number(vet.avg_rating).toFixed(1)} rating</span>}
                 {vet.distance_km != null && <span className={styles.fee}>{Number(vet.distance_km).toFixed(1)} km away</span>}
                 {vet.consultation_fee != null && <span className={styles.fee}>Fee: Rs {Number(vet.consultation_fee).toLocaleString('en-IN')}</span>}
