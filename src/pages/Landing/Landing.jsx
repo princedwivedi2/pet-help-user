@@ -6,21 +6,38 @@ import styles from './Landing.module.css';
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
+    opacity: 1, y: 0,
     transition: { duration: 0.5, delay: i * 0.1, ease: 'easeOut' },
   }),
 };
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.12 } },
-};
+const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
 
 const FEATURES = [
-  { icon: 'vets', title: 'Find Vets Near You', desc: 'Search verified veterinarians and book appointments instantly.', color: '#f97316' },
-  { icon: 'sos', title: 'Emergency SOS', desc: 'One-tap emergency alert to connect with nearby vets when your pet needs urgent care.', color: '#ef4444' },
-  { icon: 'guides', title: 'Emergency Guides', desc: 'Step-by-step first-aid guides for common pet emergencies.', color: '#8b5cf6' },
-  { icon: 'community', title: 'Community', desc: 'Ask questions, share experiences, and connect with fellow pet parents.', color: '#06b6d4' },
+  {
+    icon: 'vets', title: 'Find Vets Near You',
+    desc: 'Search verified veterinarians and book appointments instantly.',
+    gradient: 'linear-gradient(135deg, #f97316, #fb923c)',
+    glow: 'rgba(249,115,22,0.18)',
+  },
+  {
+    icon: 'sos', title: 'Emergency SOS',
+    desc: 'One-tap emergency alert to connect with nearby vets when your pet needs urgent care.',
+    gradient: 'linear-gradient(135deg, #ef4444, #f87171)',
+    glow: 'rgba(239,68,68,0.18)',
+  },
+  {
+    icon: 'guides', title: 'Emergency Guides',
+    desc: 'Step-by-step first-aid guides for common pet emergencies.',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+    glow: 'rgba(139,92,246,0.18)',
+  },
+  {
+    icon: 'community', title: 'Community',
+    desc: 'Ask questions, share experiences, and connect with fellow pet parents.',
+    gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)',
+    glow: 'rgba(6,182,212,0.18)',
+  },
 ];
 
 const STATS = [
@@ -30,9 +47,16 @@ const STATS = [
   { value: '4.8★', label: 'App Rating' },
 ];
 
+const STEPS = [
+  { n: '1', title: 'Create Account', desc: "Sign up free and add your pet's profile in seconds.", color: '#f97316' },
+  { n: '2', title: 'Find a Vet', desc: 'Browse verified vets nearby and pick the best match.', color: '#8b5cf6' },
+  { n: '3', title: 'Book & Visit', desc: 'Confirm your slot and get your pet the care they deserve.', color: '#06b6d4' },
+];
+
 export default function Landing() {
   return (
     <div className={styles.page}>
+      {/* ── Navbar ── */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link to="/" className={styles.logo}>
@@ -41,54 +65,65 @@ export default function Landing() {
           </Link>
           <div className={styles.headerActions}>
             <Link to="/login" className={styles.loginLink}>Log in</Link>
-            <Link to="/register" className={styles.signupLink}>Sign up</Link>
+            <Link to="/register" className={styles.signupLink}>Get started free</Link>
           </div>
         </div>
       </header>
 
-      {/* ── Hero with illustration ── */}
+      {/* ── Hero ── */}
       <section className={styles.hero}>
+        {/* mesh blobs */}
+        <div className={styles.blob1} />
+        <div className={styles.blob2} />
+        <div className={styles.blob3} />
+
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
+            {/* floating trust badge */}
+            <motion.div
+              className={styles.trustBadge}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <span className={styles.trustDot} />
+              🐾 Trusted by 10,000+ pet parents
+            </motion.div>
+
             <motion.h1
               className={styles.heroTitle}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
+              variants={fadeUp} initial="hidden" animate="visible" custom={0}
             >
               Your pet's health,<br />our <span className={styles.heroHighlight}>priority</span>
             </motion.h1>
+
             <motion.p
               className={styles.heroDesc}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
+              variants={fadeUp} initial="hidden" animate="visible" custom={1}
             >
               PetSathi connects you with trusted veterinarians, provides emergency care
               guidance, and builds a community of caring pet parents.
             </motion.p>
+
             <motion.div
               className={styles.heroCta}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={2}
+              variants={fadeUp} initial="hidden" animate="visible" custom={2}
             >
-              <Link to="/register" className={styles.ctaPrimary}>Get started free</Link>
+              <Link to="/register" className={styles.ctaPrimary}>
+                Get started free
+                <span className={styles.ctaArrow}>→</span>
+              </Link>
               <Link to="/find-vets" className={styles.ctaSecondary}>Find vets</Link>
             </motion.div>
-            <motion.div
-              className={styles.vetCta}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={3}
+
+            <motion.p
+              className={styles.vetCtaLink}
+              variants={fadeUp} initial="hidden" animate="visible" custom={3}
             >
-              <Link to="/vet/apply" className={styles.vetCtaLink}>Are you a veterinarian? Join as Vet →</Link>
-            </motion.div>
+              <Link to="/vet/apply">Are you a veterinarian? Join as Vet →</Link>
+            </motion.p>
           </div>
+
           <motion.div
             className={styles.heroIllustration}
             initial={{ opacity: 0, scale: 0.85 }}
@@ -107,21 +142,16 @@ export default function Landing() {
               <circle cx="213" cy="183" r="1.5" fill="white"/>
               <ellipse cx="200" cy="197" rx="6" ry="4" fill="#1c1917"/>
               <path d="M193 202c4 5 10 5 14 0" stroke="#1c1917" strokeWidth="2" fill="none" strokeLinecap="round"/>
-              <path d="M160 260c10 0 15-8 25-8s15 8 25 8 15-8 25-8 15 8 25 8" stroke="#f97316" strokeWidth="2.5" opacity="0.2" fill="none" strokeLinecap="round"/>
-              <circle cx="120" cy="120" r="12" fill="#8b5cf6" opacity="0.15"/>
-              <circle cx="290" cy="130" r="8" fill="#f97316" opacity="0.15"/>
-              <circle cx="100" cy="260" r="6" fill="#06b6d4" opacity="0.15"/>
-              <circle cx="310" cy="270" r="10" fill="#f97316" opacity="0.1"/>
-              <path d="M280 80l10 8-4 12-12 0-4-12z" fill="#8b5cf6" opacity="0.12"/>
-              <path d="M130 310l8 6-3 10-10 0-3-10z" fill="#f97316" opacity="0.12"/>
-              <rect x="155" y="275" width="90" height="12" rx="6" fill="#f97316" opacity="0.12"/>
-              <rect x="170" y="295" width="60" height="8" rx="4" fill="#8b5cf6" opacity="0.08"/>
+              <circle cx="120" cy="120" r="12" fill="#8b5cf6" opacity="0.2"/>
+              <circle cx="290" cy="130" r="8" fill="#f97316" opacity="0.2"/>
+              <circle cx="100" cy="260" r="6" fill="#06b6d4" opacity="0.2"/>
+              <circle cx="310" cy="270" r="10" fill="#f97316" opacity="0.15"/>
             </svg>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Trust Stats ── */}
+      {/* ── Stats bar ── */}
       <motion.section
         className={styles.stats}
         initial={{ opacity: 0, y: 30 }}
@@ -139,7 +169,7 @@ export default function Landing() {
         </div>
       </motion.section>
 
-      {/* ── Features ── */}
+      {/* ── Features — glassmorphism cards ── */}
       <section className={styles.features}>
         <div className={styles.featuresInner}>
           <h2 className={styles.sectionTitle}>Everything your pet needs</h2>
@@ -155,7 +185,7 @@ export default function Landing() {
           >
             {FEATURES.map((f, i) => (
               <motion.div key={f.title} className={styles.featureCard} variants={fadeUp} custom={i}>
-                <div className={styles.featureIcon} style={{ background: `${f.color}14`, color: f.color }}>
+                <div className={styles.featureIconWrap} style={{ background: f.gradient, boxShadow: `0 8px 24px ${f.glow}` }}>
                   <Icon name={f.icon} size={22} />
                 </div>
                 <h3 className={styles.featureName}>{f.title}</h3>
@@ -166,28 +196,22 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── How It Works ── */}
+      {/* ── How It Works — timeline ── */}
       <section className={styles.howItWorks}>
         <div className={styles.howInner}>
           <h2 className={styles.sectionTitle}>How it works</h2>
-          <div className={styles.steps}>
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>1</div>
-              <h3 className={styles.stepTitle}>Create Account</h3>
-              <p className={styles.stepDesc}>Sign up free and add your pet's profile in seconds.</p>
-            </div>
-            <div className={styles.stepConnector} />
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>2</div>
-              <h3 className={styles.stepTitle}>Find a Vet</h3>
-              <p className={styles.stepDesc}>Browse verified vets nearby and pick the best match.</p>
-            </div>
-            <div className={styles.stepConnector} />
-            <div className={styles.step}>
-              <div className={styles.stepNumber}>3</div>
-              <h3 className={styles.stepTitle}>Book & Visit</h3>
-              <p className={styles.stepDesc}>Book appointments instantly and get your pet the care they deserve.</p>
-            </div>
+          <p className={styles.sectionDesc}>Start in minutes. No complicated setup.</p>
+          <div className={styles.timeline}>
+            {STEPS.map((s, i) => (
+              <div key={s.n} className={styles.timelineItem}>
+                <div className={styles.timelineNode} style={{ background: s.color, boxShadow: `0 4px 16px ${s.color}44` }}>
+                  {s.n}
+                </div>
+                {i < STEPS.length - 1 && <div className={styles.timelineLine} />}
+                <h3 className={styles.stepTitle}>{s.title}</h3>
+                <p className={styles.stepDesc}>{s.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -198,19 +222,54 @@ export default function Landing() {
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.6 }}
       >
         <div className={styles.ctaInner}>
+          <div className={styles.ctaBadge}>🏥 Free to get started</div>
           <h2 className={styles.ctaTitle}>Ready to give your pet the best care?</h2>
           <p className={styles.ctaDesc}>
             Join thousands of pet parents who trust PetSathi for their pet's wellbeing.
           </p>
-          <Link to="/register" className={styles.ctaPrimary}>Create free account</Link>
+          <Link to="/register" className={styles.ctaPrimary}>
+            Create free account <span className={styles.ctaArrow}>→</span>
+          </Link>
         </div>
       </motion.section>
 
-      <footer className={styles.landingFooter}>
-        <p>&copy; {new Date().getFullYear()} PetSathi. All rights reserved.</p>
+      {/* ── Footer with columns ── */}
+      <footer className={styles.footer}>
+        <div className={styles.footerInner}>
+          <div className={styles.footerBrand}>
+            <div className={styles.footerLogo}>
+              <span className={styles.logoMark} style={{ width: 28, height: 28, fontSize: 12 }}>P</span>
+              <span className={styles.footerLogoText}>PetSathi</span>
+            </div>
+            <p className={styles.footerTagline}>Caring for pets, connecting communities.</p>
+          </div>
+          <div className={styles.footerLinks}>
+            <div className={styles.footerCol}>
+              <h4 className={styles.footerColTitle}>Product</h4>
+              <Link to="/find-vets" className={styles.footerLink}>Find Vets</Link>
+              <Link to="/guides" className={styles.footerLink}>Emergency Guides</Link>
+              <Link to="/community" className={styles.footerLink}>Community</Link>
+              <Link to="/blog" className={styles.footerLink}>Blog</Link>
+            </div>
+            <div className={styles.footerCol}>
+              <h4 className={styles.footerColTitle}>Company</h4>
+              <Link to="/vet/apply" className={styles.footerLink}>Join as Vet</Link>
+              <Link to="/legal/about" className={styles.footerLink}>About</Link>
+              <Link to="/legal/contact" className={styles.footerLink}>Contact</Link>
+            </div>
+            <div className={styles.footerCol}>
+              <h4 className={styles.footerColTitle}>Legal</h4>
+              <Link to="/legal/privacy" className={styles.footerLink}>Privacy Policy</Link>
+              <Link to="/legal/terms" className={styles.footerLink}>Terms of Service</Link>
+            </div>
+          </div>
+        </div>
+        <div className={styles.footerBottom}>
+          <p>&copy; {new Date().getFullYear()} PetSathi. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   );

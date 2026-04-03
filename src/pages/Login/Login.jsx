@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../hooks/useAuth';
 import FormInput from '../../components/common/FormInput/FormInput';
@@ -9,6 +9,8 @@ import styles from './Login.module.css';
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const resetSuccess = searchParams.get('reset') === 'success';
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,6 +79,9 @@ export default function Login() {
             <p className={styles.subtitle}>Log in to your account</p>
           </div>
 
+          {resetSuccess && (
+            <div className={styles.success}>Password reset successfully. Log in with your new password.</div>
+          )}
           {error && <div className={styles.error}>{error}</div>}
 
           <form onSubmit={handleSubmit} className={styles.form}>
@@ -101,6 +106,9 @@ export default function Login() {
             </Button>
           </form>
 
+          <p className={styles.forgotRow}>
+            <Link to="/forgot-password" className={styles.link}>Forgot password?</Link>
+          </p>
           <p className={styles.footer}>
             Don't have an account?{' '}
             <Link to="/register" className={styles.link}>Sign up</Link>

@@ -63,6 +63,18 @@ export default function Home() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
+  const nextAppt = appointments[0] || null;
+  const getCountdown = (appt) => {
+    const diff = new Date(appt.scheduled_at) - new Date();
+    if (diff <= 0) return 'Now';
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    if (d > 0) return `${d}d ${h}h`;
+    if (h > 0) return `${h}h ${m}m`;
+    return `${m}m`;
+  };
+
   return (
     <div className={styles.page}>
       {/* ── Hero Greeting Banner ── */}
@@ -91,6 +103,30 @@ export default function Home() {
           </svg>
         </div>
       </motion.div>
+
+      {/* ── Next Appointment Spotlight ── */}
+      {nextAppt && (
+        <motion.div
+          className={styles.nextAppt}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <span className={styles.nextApptLabel}>Next Appointment</span>
+          <div className={styles.nextApptRow}>
+            <div>
+              <div className={styles.nextApptVet}>
+                {nextAppt.vet_profile?.clinic_name || nextAppt.vet_profile?.vet_name || 'Vet'}
+              </div>
+              <div className={styles.nextApptTime}>{formatDateTime(nextAppt.scheduled_at)}</div>
+            </div>
+            <div className={styles.countdownBadge}>
+              <span className={styles.countdownValue}>{getCountdown(nextAppt)}</span>
+              <span className={styles.countdownUnit}>away</span>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* ── Active SOS Alert ── */}
       {activeSos && (

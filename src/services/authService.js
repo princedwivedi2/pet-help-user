@@ -8,6 +8,9 @@ const authService = {
   updateProfile: (data) => api.put('/auth/profile', data),
   changePassword: (data) => api.put('/auth/change-password', data),
   deleteAccount: (data) => api.delete('/auth/account', { data }),
+  forgotPassword: (data) => api.post('/auth/forgot-password', data),
+  resetPassword: (data) => api.post('/auth/reset-password', data),
+  resendVerification: () => api.post('/auth/email/resend'),
 };
 
 export default authService;

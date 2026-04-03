@@ -21,6 +21,9 @@ import Payments from './pages/Payments/Payments';
 import Legal from './pages/Legal/Legal';
 import VetApply from './pages/VetApply/VetApply';
 import VetApplySuccess from './pages/VetApplySuccess/VetApplySuccess';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
+import Incidents from './pages/Incidents/Incidents';
 import { useAuth } from './hooks/useAuth';
 
 function ProtectedRoute({ children }) {
@@ -35,6 +38,8 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/vet/apply" element={<VetApply />} />
       <Route path="/vet/apply/success" element={<VetApplySuccess />} />
 
@@ -66,6 +71,7 @@ export default function App() {
         <Route path="/payments" element={<Payments />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/incidents" element={<Incidents />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

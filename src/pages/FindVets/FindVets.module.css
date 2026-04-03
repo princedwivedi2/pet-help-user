@@ -106,6 +106,80 @@
   color: var(--color-text-secondary);
 }
 
+.vetInitials {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}
+
+.rating {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.distancePill {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-border-light, #f1f5f9);
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.consultChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.consultChip {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light, #e2e8f0);
+  padding: 2px 7px;
+  border-radius: 99px;
+  text-transform: capitalize;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 6px;
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.filterChip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.filterChipActive {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr 1fr;

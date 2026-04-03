@@ -23,6 +23,7 @@ export default function Pets() {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [photoFile, setPhotoFile] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState('');
@@ -38,7 +39,7 @@ export default function Pets() {
 
   useEffect(() => { load(); }, []);
 
-  const openAdd = () => { setEditing(null); setForm(emptyForm); setError(''); setShowForm(true); };
+  const openAdd = () => { setEditing(null); setForm(emptyForm); setPhotoFile(null); setError(''); setShowForm(true); };
   const openEdit = (pet) => {
     setEditing(pet);
     setForm({
@@ -50,6 +51,7 @@ export default function Pets() {
       photo_url: pet.photo_url || '',
       medical_notes: pet.medical_notes || '',
     });
+    setPhotoFile(null);
     setError('');
     setShowForm(true);
   };
@@ -59,16 +61,22 @@ export default function Pets() {
     setSaving(true);
     setError('');
     try {
-      const payload = { ...form };
-      if (payload.weight_kg) payload.weight_kg = Number(payload.weight_kg);
-      if (!payload.birth_date) delete payload.birth_date;
-      if (!payload.photo_url) delete payload.photo_url;
+      const payload = new FormData();
+      payload.append('name', form.name);
+      payload.append('species', form.species);
+      if (form.breed) payload.append('breed', form.breed);
+      if (form.birth_date) payload.append('birth_date', form.birth_date);
+      if (form.weight_kg) payload.append('weight_kg', String(Number(form.weight_kg)));
+      if (form.medical_notes) payload.append('medical_notes', form.medical_notes);
+      if (photoFile) payload.append('photo', photoFile);
+
       if (editing) await petService.update(editing.id, payload);
       else await petService.create(payload);
       setShowForm(false);
+      setPhotoFile(null);
       load();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save pet');
+      setError(err?.message || 'Failed to save pet');
     } finally {
       setSaving(false);
     }
@@ -151,7 +159,15 @@ export default function Pets() {
           <FormInput label="Breed" value={form.breed} onChange={(e) => setForm({ ...form, breed: e.target.value })} placeholder="e.g. Labrador" />
           <FormInput label="Birth Date" type="date" value={form.birth_date} onChange={(e) => setForm({ ...form, birth_date: e.target.value })} />
           <FormInput label="Weight (kg)" type="number" value={form.weight_kg} onChange={(e) => setForm({ ...form, weight_kg: e.target.value })} />
-          <FormInput label="Photo URL" value={form.photo_url} onChange={(e) => setForm({ ...form, photo_url: e.target.value })} placeholder="https://example.com/photo.jpg" />
+          <FormInput
+            label="Photo"
+            type="file"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+            onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+          />
+          {editing?.photo_url && !photoFile && (
+            <p className={styles.petDetail} style={{ marginBottom: 12 }}>Current photo will be kept unless you upload a new one.</p>
+          )}
           <FormInput label="Medical Notes" as="textarea" value={form.medical_notes} onChange={(e) => setForm({ ...form, medical_notes: e.target.value })} placeholder="Any medical conditions or notes..." />
           <Button type="submit" fullWidth loading={saving}>{editing ? 'Update Pet' : 'Add Pet'}</Button>
         </form>

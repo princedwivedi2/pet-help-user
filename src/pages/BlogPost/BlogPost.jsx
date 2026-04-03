@@ -21,17 +21,22 @@ export default function BlogPost() {
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState('');
   const [commenting, setCommenting] = useState(false);
+  const [commentError, setCommentError] = useState('');
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [loadError, setLoadError] = useState('');
 
   const load = async () => {
     try {
+      setLoadError('');
       const raw = await execute(uuid);
       const p = apiObject(raw, 'post');
       setPost(p);
       setLiked(p?.is_liked || false);
       setLikesCount(p?.likes_count || 0);
-    } catch (_) {}
+    } catch (err) {
+      setLoadError(err?.message || 'Failed to load post');
+    }
   };
 
   useEffect(() => { load(); }, [uuid]);
@@ -42,23 +47,29 @@ export default function BlogPost() {
       await blogService.toggleLike(uuid);
       setLiked(!liked);
       setLikesCount((c) => liked ? c - 1 : c + 1);
-    } catch (_) {}
+    } catch {
+      // Like toggle errors are non-critical — count will re-sync on next load
+    }
   };
 
   const handleComment = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
     setCommenting(true);
+    setCommentError('');
     try {
       await blogService.addComment(uuid, { content: comment });
       setComment('');
       load();
-    } catch (_) {} finally {
+    } catch (err) {
+      setCommentError(err?.message || 'Failed to post comment');
+    } finally {
       setCommenting(false);
     }
   };
 
   if (loading) return <Loader center />;
+  if (loadError) return <div className={styles.notFound}>{loadError}</div>;
   if (!post) return <div className={styles.notFound}>Post not found</div>;
 
   const comments = Array.isArray(post.comments) ? post.comments : [];
@@ -109,6 +120,7 @@ export default function BlogPost() {
               onChange={(e) => setComment(e.target.value)}
               placeholder="Write a comment..."
             />
+            {commentError && <p style={{ color: '#dc2626', fontSize: 13, marginTop: 4 }}>{commentError}</p>}
             <Button type="submit" size="sm" loading={commenting}>Post comment</Button>
           </form>
         )}

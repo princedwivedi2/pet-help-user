@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
+import notificationService from '../../../services/notificationService';
 import Icon from '../../common/Icon/Icon';
 import styles from './Navbar.module.css';
 
@@ -25,7 +26,21 @@ const AUTH_NAV = [
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const fetchCount = () => {
+      notificationService.getUnreadCount()
+        .then((res) => setUnreadCount(res?.data?.unread_count ?? res?.data?.count ?? 0))
+        .catch(() => {});
+    };
+    fetchCount();
+    const interval = setInterval(fetchCount, 30000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated, location.pathname]);
 
   const navItems = isAuthenticated ? AUTH_NAV : PUBLIC_NAV;
 
@@ -101,8 +116,19 @@ export default function Navbar() {
         <div className={styles.actions}>
           {isAuthenticated ? (
             <>
-              <Link to="/notifications" className={styles.iconBtn}>
+              <Link to="/notifications" className={styles.iconBtn} style={{ position: 'relative' }}>
                 <Icon name="notification" size={20} />
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: 'absolute', top: -4, right: -4,
+                    background: '#ef4444', color: '#fff',
+                    fontSize: 10, fontWeight: 700, borderRadius: '50%',
+                    minWidth: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    padding: '0 3px',
+                  }}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
               </Link>
               <Link to="/profile" className={styles.avatar}>
                 {(user?.name || 'U').charAt(0).toUpperCase()}

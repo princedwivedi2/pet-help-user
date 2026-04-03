@@ -4,6 +4,7 @@ import useApi from '../../hooks/useApi';
 import vetService from '../../services/vetService';
 import appointmentService from '../../services/appointmentService';
 import petService from '../../services/petService';
+import reviewService from '../../services/reviewService';
 import { useAuth } from '../../hooks/useAuth';
 import { apiObject, apiList } from '../../utils/helpers';
 import { APPOINTMENT_TYPES } from '../../utils/constants';
@@ -31,6 +32,8 @@ export default function VetDetail() {
   const [bookError, setBookError] = useState('');
   const [bookSuccess, setBookSuccess] = useState('');
   const [payModal, setPayModal] = useState({ open: false, uuid: null, amount: 0 });
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -41,7 +44,20 @@ export default function VetDetail() {
         console.error('Failed to load vet details:', err?.message);
       }
     };
+    const loadReviews = async () => {
+      setReviewsLoading(true);
+      try {
+        const res = await reviewService.getForVet(uuid, { per_page: 10 });
+        const list = res?.data?.reviews?.data || res?.data?.reviews || res?.data?.data || [];
+        setReviews(Array.isArray(list) ? list : []);
+      } catch {
+        setReviews([]);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
     load();
+    loadReviews();
   }, [execute, uuid]);
 
   const openBooking = async () => {
@@ -106,7 +122,7 @@ export default function VetDetail() {
         setTimeout(() => { setShowBooking(false); setBookSuccess(''); }, 2000);
       }
     } catch (err) {
-      setBookError(err.response?.data?.message || 'Booking failed');
+      setBookError(err?.message || 'Booking failed');
     } finally {
       setBookLoading(false);
     }
@@ -118,7 +134,10 @@ export default function VetDetail() {
     return Number(vet?.consultation_fee || 0);
   };
 
-  const consultationTypes = Array.isArray(vet?.consultation_types) ? vet.consultation_types : ['clinic_visit'];
+  const consultationTypes = Array.isArray(vet?.consultation_types)
+    ? vet.consultation_types.filter(Boolean)
+    : [];
+  const availableConsultationTypes = consultationTypes.length > 0 ? consultationTypes : ['clinic_visit'];
 
   if (loading) return <Loader center />;
   if (!vet) return <div className={styles.notFound}>Vet not found</div>;
@@ -162,10 +181,10 @@ export default function VetDetail() {
             {vet.email && <div className={styles.detailItem}><span className={styles.detailLabel}>Email</span><span>{vet.email}</span></div>}
             {services.length > 0 && <div className={styles.detailItem}><span className={styles.detailLabel}>Services</span><span>{services.join(', ')}</span></div>}
             {species.length > 0 && <div className={styles.detailItem}><span className={styles.detailLabel}>Accepted Species</span><span>{species.join(', ')}</span></div>}
-            {consultationTypes.length > 0 && (
+            {availableConsultationTypes.length > 0 && (
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Consultation Types</span>
-                <span>{consultationTypes.map(t => APPOINTMENT_TYPES.find(at => at.value === t)?.label || t).join(', ')}</span>
+                <span>{availableConsultationTypes.map(t => APPOINTMENT_TYPES.find(at => at.value === t)?.label || t).join(', ')}</span>
               </div>
             )}
             {vet.consultation_fee != null && <div className={styles.detailItem}><span className={styles.detailLabel}>Clinic Fee</span><span>₹{Number(vet.consultation_fee).toLocaleString('en-IN')}</span></div>}
@@ -189,6 +208,32 @@ export default function VetDetail() {
         )}
       </div>
 
+      <Card>
+        <h3 className={styles.cardTitle}>Reviews</h3>
+        {reviewsLoading ? (
+          <p style={{ fontSize: 13, color: '#6b7280' }}>Loading reviews…</p>
+        ) : reviews.length === 0 ? (
+          <p style={{ fontSize: 13, color: '#6b7280' }}>No reviews yet.</p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {reviews.map((r) => (
+              <div key={r.uuid || r.id} style={{ borderBottom: '1px solid #f3f4f6', paddingBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontWeight: 600, fontSize: 13 }}>{r.user?.name || 'User'}</span>
+                  <span style={{ fontSize: 12, color: '#f59e0b' }}>{'★'.repeat(r.rating || 0)}{'☆'.repeat(5 - (r.rating || 0))}</span>
+                </div>
+                {r.review && <p style={{ margin: 0, fontSize: 13, color: '#4b5563' }}>{r.review}</p>}
+                {r.reply && (
+                  <p style={{ margin: '6px 0 0', fontSize: 12, color: '#6b7280', paddingLeft: 10, borderLeft: '2px solid #e5e7eb' }}>
+                    <strong>Vet:</strong> {r.reply}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+
       <Modal open={showBooking} onClose={() => setShowBooking(false)} title="Book Appointment">
         {bookSuccess ? (
           <div className={styles.success}>{bookSuccess}</div>
@@ -196,7 +241,7 @@ export default function VetDetail() {
           <form onSubmit={handleBook}>
             {bookError && <div className={styles.error}>{bookError}</div>}
             <FormInput label="Consultation Type" as="select" value={bookForm.appointment_type} onChange={(e) => setBookForm({ ...bookForm, appointment_type: e.target.value })} required>
-              {consultationTypes.map((t) => {
+              {availableConsultationTypes.map((t) => {
                 const at = APPOINTMENT_TYPES.find(a => a.value === t);
                 return <option key={t} value={t}>{at?.label || t}</option>;
               })}
@@ -227,7 +272,10 @@ export default function VetDetail() {
               </FormInput>
             )}
             <FormInput label="Reason" as="textarea" value={bookForm.reason} onChange={(e) => setBookForm({ ...bookForm, reason: e.target.value })} placeholder="Describe the reason for visit (min 5 chars)..." required />
-            <Button type="submit" fullWidth loading={bookLoading}>Confirm booking</Button>
+            {slots.length > 0 && !bookForm.time_slot && (
+              <p style={{ fontSize: 12, color: '#dc2626', marginBottom: 8 }}>Please select a time slot to continue.</p>
+            )}
+            <Button type="submit" fullWidth loading={bookLoading} disabled={slots.length > 0 && !bookForm.time_slot}>Confirm booking</Button>
            </form>
         )}
       </Modal>

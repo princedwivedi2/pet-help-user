@@ -24,13 +24,19 @@ export default function Register() {
     e.preventDefault();
     setError('');
     setErrors({});
+
+    if (form.password !== form.password_confirmation) {
+      setErrors({ password_confirmation: ['Passwords do not match'] });
+      return;
+    }
+
     setLoading(true);
     try {
       await register(form);
       navigate('/home');
     } catch (err) {
-      if (err.response?.data?.errors) setErrors(err.response.data.errors);
-      setError(err.response?.data?.message || err.message || 'Registration failed');
+      if (err.errors) setErrors(err.errors);
+      setError(err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -121,20 +127,24 @@ export default function Register() {
               placeholder="+91 98765 43210"
               required
             />
-            <FormInput
-              label="Password"
-              type="password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              error={errors.password?.[0]}
-              placeholder="Min. 8 characters"
-              required
-            />
+            <div>
+              <FormInput
+                label="Password"
+                type="password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                error={errors.password?.[0]}
+                placeholder="Min. 8 characters"
+                required
+              />
+              <p className={styles.passwordHint}>Min. 8 characters · 1 uppercase · 1 number</p>
+            </div>
             <FormInput
               label="Confirm Password"
               type="password"
               value={form.password_confirmation}
               onChange={(e) => setForm({ ...form, password_confirmation: e.target.value })}
+              error={errors.password_confirmation?.[0]}
               placeholder="Re-enter your password"
               required
             />

@@ -32,6 +32,7 @@ export default function SOS() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [locationDenied, setLocationDenied] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
   const [reviewSosUuid, setReviewSosUuid] = useState(null);
@@ -58,8 +59,11 @@ export default function SOS() {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => setForm((f) => ({ ...f, latitude: pos.coords.latitude.toString(), longitude: pos.coords.longitude.toString() })),
-        () => {}
+        (pos) => {
+          setForm((f) => ({ ...f, latitude: pos.coords.latitude.toString(), longitude: pos.coords.longitude.toString() }));
+          setLocationDenied(false);
+        },
+        () => setLocationDenied(true)
       );
     }
   }, []);
@@ -83,7 +87,7 @@ export default function SOS() {
       setForm({ ...form, pet_id: '', description: '', address: '', emergency_type: '' });
       load();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send SOS');
+      setError(err?.message || 'Failed to send SOS');
     } finally {
       setSending(false);
     }
@@ -123,7 +127,7 @@ export default function SOS() {
       setReviewSosUuid(null);
       setSuccess('Review submitted. Thank you!');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Failed to submit review');
+      setError(err?.message || 'Failed to submit review');
     } finally {
       setSubmittingReview(false);
     }
@@ -181,7 +185,12 @@ export default function SOS() {
                   <Icon name="location" size={14} />
                   {form.latitude ? 'Location detected' : 'Location not available — please enable location'}
                 </div>
-                <Button type="submit" variant="danger" fullWidth loading={sending} disabled={!form.latitude}>
+                {locationDenied && !form.latitude && (
+                  <p className={styles.locationError}>
+                    Location required — please enable GPS or enter coordinates manually
+                  </p>
+                )}
+                <Button type="submit" variant="danger" fullWidth loading={sending} disabled={!form.latitude || (locationDenied && !form.latitude)}>
                   Send SOS Alert
                 </Button>
               </form>

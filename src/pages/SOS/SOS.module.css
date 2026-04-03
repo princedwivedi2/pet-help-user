@@ -64,6 +64,13 @@
   margin-bottom: 18px;
 }
 
+.locationError {
+  font-size: var(--font-xs);
+  color: #dc2626;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
 .sectionTitle {
   font-size: var(--font-md);
   font-weight: 700;

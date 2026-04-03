@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import authService from '../../services/authService';
 import Card from '../../components/common/Card/Card';
@@ -40,7 +41,7 @@ export default function Profile() {
       await authService.updateProfile(profileForm);
       setSuccess('Profile updated successfully');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
+      setError(err?.message || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -56,7 +57,7 @@ export default function Profile() {
       setSuccess('Password changed successfully');
       setPasswordForm({ current_password: '', password: '', password_confirmation: '' });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to change password');
+      setError(err?.message || 'Failed to change password');
     } finally {
       setSaving(false);
     }
@@ -77,7 +78,7 @@ export default function Profile() {
       await authService.deleteAccount({ password: deletePassword });
       logout();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete account');
+      setError(err?.message || 'Failed to delete account');
     } finally {
       setDeleting(false);
     }
@@ -181,6 +182,9 @@ export default function Profile() {
       </div>
 
       <div className={styles.logoutSection}>
+        <Link to="/incidents" style={{ fontSize: 14, color: 'var(--color-primary)', textDecoration: 'none' }}>
+          View Incident Logs
+        </Link>
         <Button variant="outline" onClick={logout}>Log out</Button>
       </div>
     </div>

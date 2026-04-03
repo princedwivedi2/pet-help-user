@@ -66,22 +66,25 @@ export default function FormInput({
       );
     }
 
-    return (
-      <input
-        id={id}
-        name={name}
-        type={type}
-        className={`${styles.input} ${error ? styles.inputError : ''}`}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-        min={min}
-        max={max}
-        step={step}
-        {...rest}
-      />
-    );
+    const inputProps = {
+      id,
+      name,
+      type,
+      className: `${styles.input} ${error ? styles.inputError : ''}`,
+      onChange,
+      placeholder,
+      disabled,
+      min,
+      max,
+      step,
+      ...rest,
+    };
+
+    if (type !== 'file') {
+      inputProps.value = value;
+    }
+
+    return <input {...inputProps} />;
   };
 
   return (

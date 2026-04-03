@@ -30,25 +30,31 @@ export default function Community() {
   const [newForm, setNewForm] = useState({ title: '', content: '', topic_uuid: '' });
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     const loadTopics = async () => {
       try {
         const res = await communityService.getTopics();
         setTopics(apiList(res?.data, 'topics'));
-      } catch (_) {}
+      } catch {
+        // Topics are supplemental — silently skip if unavailable
+      }
     };
     loadTopics();
   }, []);
 
   const load = useCallback(async () => {
     try {
+      setLoadError('');
       const params = { search, page, per_page: 15 };
       if (topic) params.topic_uuid = topic;
       const raw = await execute(params);
       setPosts(apiList(raw, 'posts'));
       setMeta(apiPagination(raw));
-    } catch (_) {}
+    } catch (err) {
+      setLoadError(err?.message || 'Failed to load community posts');
+    }
   }, [execute, search, topic, page]);
 
   useEffect(() => { load(); }, [load]);
@@ -72,7 +78,7 @@ export default function Community() {
       setShowNew(false);
       load();
     } catch (err) {
-      setCreateError(err.response?.data?.message || 'Failed to create post');
+      setCreateError(err?.message || 'Failed to create post');
     } finally {
       setCreating(false);
     }
@@ -90,6 +96,8 @@ export default function Community() {
           New Post
         </Button>
       </div>
+
+      {loadError && <div className={styles.error}>{loadError}</div>}
 
       <SearchBar value={search} onChange={handleSearch} placeholder="Search discussions..." />
 

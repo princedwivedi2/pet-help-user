@@ -1,0 +1,75 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-4, 16px);
+}
+
+.header {
+  margin-bottom: var(--space-4, 16px);
+}
+
+.title {
+  font-size: var(--font-xl, 20px);
+  font-weight: 700;
+  color: var(--color-text, #111827);
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-size: var(--font-sm, 14px);
+  color: var(--color-text-muted, #6b7280);
+  margin: 0;
+}
+
+.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.incidentRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.incidentMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.incidentTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 4px;
+}
+
+.incidentDesc {
+  font-size: 13px;
+  color: var(--color-text-muted, #4b5563);
+  margin: 0 0 4px;
+}
+
+.incidentMeta {
+  font-size: 12px;
+  color: var(--color-text-muted, #6b7280);
+  margin: 0 0 4px;
+}
+
+.incidentDate {
+  font-size: 12px;
+  color: var(--color-text-muted, #9ca3af);
+  margin: 0;
+}

@@ -22,7 +22,7 @@ export default function PaymentModal({ open, onClose, payableType, payableUuid, 
 
       const orderData = res?.data || res;
       const orderId = orderData.razorpay_order_id || orderData.order_id;
-      const paymentUuid = orderData.payment_uuid;
+      const paymentUuid = orderData.payment?.uuid || orderData.payment_uuid;
       const razorpayKey = orderData.razorpay_key || orderData.key_id || import.meta.env.VITE_RAZORPAY_KEY || 'rzp_test_placeholder';
 
       if (!window.Razorpay) {
@@ -49,7 +49,7 @@ export default function PaymentModal({ open, onClose, payableType, payableUuid, 
             setSuccess(true);
             setTimeout(() => { onSuccess?.(); onClose(); }, 1500);
           } catch (err) {
-            setError(err?.response?.data?.message || 'Payment verification failed');
+            setError(err?.message || 'Payment verification failed');
           }
         },
         prefill: {},
@@ -66,7 +66,7 @@ export default function PaymentModal({ open, onClose, payableType, payableUuid, 
       });
       rzp.open();
     } catch (err) {
-      setError(err?.response?.data?.message || 'Failed to initiate payment');
+      setError(err?.message || 'Failed to initiate payment');
       setLoading(false);
     }
   };
