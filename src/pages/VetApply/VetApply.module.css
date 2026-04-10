@@ -191,6 +191,211 @@
   margin-bottom: 10px;
 }
 
+/* ═══ Enhanced Location Section ═══ */
+.locationSection {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--color-bg), var(--color-surface-warm));
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-light);
+}
+
+.locationHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+
+.locationHeader svg {
+  color: var(--color-primary);
+}
+
+.locationHint {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.locationPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.locationSearchRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.locationSearchField {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.locationSearchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.locationSearchInput {
+  width: 100%;
+  padding: 12px 12px 12px 42px;
+  font-size: var(--font-sm);
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.locationSearchInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+.btnSpinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.statusMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  padding: 10px 14px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 4px 0;
+}
+
+.statusSpinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.statusSuccess {
+  background: var(--color-success-light);
+  color: var(--color-success-dark);
+  font-weight: 500;
+}
+
+.statusError {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.coordsDisplay {
+  background: var(--color-success-light);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.coordsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.coordItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coordLabel {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.coordInput {
+  padding: 8px 12px;
+  font-size: var(--font-sm);
+  font-family: monospace;
+  color: var(--color-success-dark);
+  background: white;
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  border-radius: var(--radius-md);
+  outline: none;
+  font-weight: 600;
+}
+
+.coordInput:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+.coordsHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: var(--color-success-dark);
+  margin: 0;
+}
+
+.manualEntry {
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-border);
+  margin-top: 8px;
+}
+
+.manualHint {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 12px;
+}
+
+.addressDetails,
+.feesSection {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.addressHeader,
+.feesHeader {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .slotList {
   display: flex;
   flex-direction: column;

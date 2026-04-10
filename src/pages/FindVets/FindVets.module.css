@@ -1,193 +1,932 @@
+/* ═══════════════════════════════════════════════════
+   FindVets — Practo/Netmeds Style Discovery Page
+   Modern healthcare platform aesthetic
+   ═══════════════════════════════════════════════════ */
+
 .page {
-  padding: 8px 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-.header {
-  margin-bottom: 24px;
+/* ═══ Hero Section ═══ */
+.hero {
+  background: var(--gradient-hero);
+  padding: 48px var(--content-padding) 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
 }
 
-.title {
-  font-size: var(--font-xl);
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 680px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroText {
+  margin-bottom: 28px;
+}
+
+.heroTitle {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 800;
-  margin-bottom: 6px;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
 }
 
-.subtitle {
-  font-size: var(--font-sm);
+.heroHighlight {
+  color: var(--color-primary);
+  position: relative;
+}
+
+.heroHighlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--color-primary-light);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.heroSubtitle {
+  font-size: var(--font-md);
   color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 520px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 14px;
+.heroIllustration {
+  flex-shrink: 0;
+  display: none;
 }
 
-.sectionStack {
+@media (min-width: 900px) {
+  .heroIllustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.heroImagePlaceholder {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, var(--color-primary-light), #fff7ed);
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-primary);
+  box-shadow: 0 20px 60px rgba(249, 115, 22, 0.15);
 }
 
-.sectionTitle {
-  font-size: var(--font-lg);
+.heroImagePlaceholder svg {
+  opacity: 0.8;
+}
+
+.heroImagePlaceholder span {
   font-weight: 700;
-  margin-bottom: 2px;
+  font-size: var(--font-lg);
 }
 
-.sectionHint {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
-  margin-top: 8px;
+/* ═══ Search Box ═══ */
+.searchBox {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 0, 0, 0.03);
 }
 
-.cardLink {
-  display: block;
-  text-decoration: none;
-}
-
-.vetCard {
+.searchRow {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.vetAvatar {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
+.searchField {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.searchInput,
+.searchSelect {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  font-size: var(--font-base);
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.searchInput:focus,
+.searchSelect:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+  background: var(--color-surface);
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.searchSelect {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a8a29e' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.locateBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
   background: var(--color-primary-light);
   color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.locateBtn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.searchSpinner {
+  position: absolute;
+  right: 52px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.searchBtn {
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.btnSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Suggestions dropdown */
+.suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-light);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.suggestionItem {
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-sm);
+  color: var(--color-text);
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.suggestionItem:hover {
+  background: var(--color-primary-light);
+}
+
+.suggestionItem svg {
+  color: var(--color-text-muted);
   flex-shrink: 0;
 }
 
-.vetInfo {
-  flex: 1;
-  min-width: 0;
-}
-
-.vetName {
+.locationIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-light);
   font-size: var(--font-sm);
-  font-weight: 700;
-  margin-bottom: 3px;
+  color: var(--color-text-secondary);
 }
 
-.vetSpec {
-  font-size: var(--font-xs);
+.locationIndicator svg {
+  color: var(--color-primary);
+}
+
+.locationIndicator strong {
+  color: var(--color-text);
+}
+
+/* ═══ Quick Filters ═══ */
+.quickFilters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--content-padding);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-light);
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 50;
+  overflow-x: auto;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.filterDivider {
+  width: 1px;
+  height: 24px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.quickFilter {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.quickFilter:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.quickFilterActive {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.quickFilterEmergency.quickFilterActive {
+  background: var(--color-danger-light);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.viewToggle {
+  display: flex;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.viewBtn:hover {
+  color: var(--color-text);
+}
+
+.viewBtnActive {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ═══ Main Content ═══ */
+.mainContent {
+  padding: 24px var(--content-padding);
+  min-height: 60vh;
+}
+
+.resultsHeader {
+  margin-bottom: 24px;
+}
+
+.resultsTitle {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text);
   margin-bottom: 4px;
 }
 
-.vetCity {
-  font-size: var(--font-xs);
+.resultsSubtitle {
+  font-size: var(--font-sm);
   color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
-.vetMeta {
+/* ═══ Vet List ═══ */
+.vetList {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  gap: 32px;
+}
+
+.vetSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.sectionIcon {
+  font-size: 18px;
+}
+
+.sectionCount {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+/* ═══ Vet Card — Practo Style ═══ */
+.vetCard {
+  display: block;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-light);
+  padding: 20px;
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+
+.vetCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.vetCardSelected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+.vetCardInner {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Avatar section */
+.vetAvatarSection {
+  position: relative;
   flex-shrink: 0;
 }
 
-.fee {
-  font-size: var(--font-xs);
-  font-weight: 600;
-  color: var(--color-text-secondary);
+.vetAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-primary-light), #fff7ed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 3px solid var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.vetAvatarEmergency {
+  border-color: var(--color-danger-light);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.vetAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .vetInitials {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--color-primary);
   letter-spacing: -0.02em;
 }
 
-.rating {
-  font-size: var(--font-xs);
+.verifiedBadge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-surface);
+}
+
+/* Vet info */
+.vetInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.vetNameRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.vetName {
+  font-size: var(--font-md);
   font-weight: 700;
-  color: #f59e0b;
+  color: var(--color-text);
+  margin: 0;
 }
 
-.distancePill {
-  font-size: 10px;
+.emergencyTag {
+  font-size: 11px;
   font-weight: 600;
-  color: var(--color-text-muted);
-  background: var(--color-border-light, #f1f5f9);
-  padding: 2px 8px;
-  border-radius: 99px;
+  color: var(--color-danger);
+  background: var(--color-danger-light);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  animation: pulse-emergency 2s infinite;
 }
 
-.consultChips {
+@keyframes pulse-emergency {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.vetSpec {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 6px;
+}
+
+.vetClinic,
+.vetLocation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+
+.distanceInline {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.consultTypes {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 6px;
+  gap: 6px;
+  margin-top: 10px;
 }
 
-.consultChip {
-  font-size: 10px;
+.consultTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--color-text-secondary);
   background: var(--color-bg);
-  border: 1px solid var(--color-border-light, #e2e8f0);
-  padding: 2px 7px;
-  border-radius: 99px;
-  text-transform: capitalize;
+  border: 1px solid var(--color-border-light);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
 }
 
-.filterRow {
+.consultTagVideo {
+  color: var(--color-info);
+  background: var(--color-info-light);
+  border-color: transparent;
+}
+
+/* Actions section */
+.vetActions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 14px 0 6px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 110px;
 }
 
-.filterChip {
-  display: inline-flex;
+.ratingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.ratingValue {
+  display: flex;
   align-items: center;
-  padding: 6px 14px;
-  border-radius: 99px;
-  font-size: var(--font-xs);
+  gap: 4px;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+}
+
+.ratingValue svg {
+  color: #16a34a;
+}
+
+.ratingCount {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.feeBox {
+  text-align: right;
+}
+
+.feeLabel {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.feeValue {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.bookBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-sm);
   font-weight: 600;
   cursor: pointer;
-  border: 1.5px solid var(--color-border, #e2e8f0);
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  transition: all 0.15s ease;
-  white-space: nowrap;
+  transition: all var(--transition-fast);
   font-family: inherit;
+  margin-top: auto;
 }
 
-.filterChip:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+.bookBtn:hover {
+  background: var(--color-primary-hover);
+  transform: translateX(2px);
 }
 
-.filterChipActive {
-  background: var(--color-primary-light);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+/* ═══ Map View ═══ */
+.mapViewContainer {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  min-height: 600px;
 }
 
+.mapSidebar {
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+.mapVetList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mapArea {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  min-height: 500px;
+  background: var(--color-bg);
+}
+
+.mapLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: var(--color-text-muted);
+}
+
+.mapSpinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ═══ Loading State ═══ */
+.loadingState {
+  padding: 20px 0;
+}
+
+.skeletonGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeletonCard {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-light);
+  padding: 20px;
+}
+
+.skeletonAvatar {
+  flex-shrink: 0;
+}
+
+.skeletonContent {
+  flex: 1;
+}
+
+.skeletonActions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* ═══ Empty State ═══ */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 100px;
+  height: 100px;
+  background: var(--color-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--color-text-muted);
+}
+
+.emptyTitle {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+
+.emptyMessage {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 20px;
+  max-width: 320px;
+}
+
+/* ═══ Vet CTA ═══ */
+.vetCta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, #fef3c7, #fff7ed);
+  padding: 24px 32px;
+  border-radius: var(--radius-xl);
+  margin: 40px var(--content-padding) 20px;
+}
+
+.ctaContent h3 {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 4px;
+}
+
+.ctaContent p {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ═══ Responsive ═══ */
 @media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
+  .mapViewContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .mapSidebar {
+    max-height: 300px;
+    order: 2;
+  }
+
+  .mapArea {
+    order: 1;
+    min-height: 350px;
   }
 }
 
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .hero {
+    padding: 32px var(--content-padding) 40px;
+  }
+
+  .searchRow {
+    flex-direction: column;
+  }
+
+  .searchField {
+    min-width: 100%;
+  }
+
+  .searchBtn {
+    width: 100%;
+  }
+
+  .quickFilters {
+    padding: 12px var(--content-padding);
+  }
+
+  .filterDivider {
+    display: none;
+  }
+
+  .viewToggle {
+    display: none;
+  }
+
+  .vetCardInner {
+    flex-wrap: wrap;
+  }
+
+  .vetAvatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .vetInitials {
+    font-size: 20px;
+  }
+
+  .vetActions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .bookBtn {
+    margin-top: 0;
+  }
+
+  .vetCta {
+    flex-direction: column;
+    text-align: center;
+    margin: 32px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+
+  .vetCard {
+    padding: 16px;
+  }
+
+  .vetAvatarSection {
+    display: none;
   }
 }

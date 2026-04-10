@@ -542,44 +542,262 @@ export default function VetApply() {
             </fieldset>
           )}
 
-          {/* ═══ STEP 3 ═══ */}
+          {/* ═══ STEP 3: Clinic Location ═══ */}
           {currentStep === 3 && (
             <fieldset className={styles.section}>
               <legend className={styles.sectionTitle}>Clinic Information</legend>
-              <FormInput label="Clinic Name" value={form.clinic_name} onChange={updateField('clinic_name')} error={errors.clinic_name?.[0]} placeholder="e.g., City Pet Hospital" required />
-              <FormInput label="Clinic Address" as="textarea" rows={2} value={form.clinic_address} onChange={updateField('clinic_address')} error={errors.clinic_address?.[0]} placeholder="Full street address" required />
-              <div className={styles.grid2}>
-                <FormInput label="City" value={form.city} onChange={updateField('city')} error={errors.city?.[0]} placeholder="e.g., Mumbai" required />
-                <FormInput label="State" value={form.state} onChange={updateField('state')} error={errors.state?.[0]} placeholder="e.g., Maharashtra" />
-              </div>
-              <FormInput label="Postal Code" value={form.postal_code} onChange={updateField('postal_code')} error={errors.postal_code?.[0]} placeholder="e.g., 400001" />
+              
+              <FormInput 
+                label="Clinic Name" 
+                value={form.clinic_name} 
+                onChange={updateField('clinic_name')} 
+                error={errors.clinic_name?.[0]} 
+                placeholder="e.g., City Pet Hospital" 
+                required 
+              />
 
-              <div className={styles.locationActions}>
-                <Button type="button" size="sm" variant="ghost" onClick={geocodeClinicAddress}>Geocode Address</Button>
-                <Button type="button" size="sm" variant="ghost"
-                  onClick={() => { if (deviceCoords.latitude !== null) setForm((prev) => ({ ...prev, latitude: String(deviceCoords.latitude), longitude: String(deviceCoords.longitude), location_override_confirmed: false })); }}
-                  disabled={deviceCoords.latitude === null}
-                >Use Current Location</Button>
-              </div>
-              {geoCodeStatus === 'loading' && <p className={styles.sectionHint}>Resolving clinic address coordinates...</p>}
-              {geoCodeStatus === 'done' && <p className={styles.sectionHint}>✓ Address resolved into coordinates.</p>}
-              {geoCodeStatus === 'error' && <p className={styles.sectionHint}>Could not resolve address. Enter coordinates manually.</p>}
+              {/* Location Picker Section */}
+              <div className={styles.locationSection}>
+                <h4 className={styles.locationHeader}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Clinic Location
+                </h4>
+                <p className={styles.locationHint}>
+                  Search for your clinic address, use your current location, or click on the map to set the exact coordinates.
+                </p>
 
-              <div className={styles.grid2}>
-                <FormInput label="Latitude" type="number" step="0.000001" value={form.latitude} onChange={updateField('latitude')} error={errors.location?.[0]} placeholder="e.g., 19.076090" required />
-                <FormInput label="Longitude" type="number" step="0.000001" value={form.longitude} onChange={updateField('longitude')} error={errors.location?.[0]} placeholder="e.g., 72.877426" required />
+                {/* Import and use LocationPicker - we'll use a simpler inline version */}
+                <div className={styles.locationPicker}>
+                  <div className={styles.locationSearchRow}>
+                    <div className={styles.locationSearchField}>
+                      <span className={styles.locationSearchIcon}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="11" cy="11" r="8"/>
+                          <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                      </span>
+                      <input
+                        type="text"
+                        className={styles.locationSearchInput}
+                        placeholder="Search for clinic address..."
+                        value={form.clinic_address}
+                        onChange={(e) => updateField('clinic_address')(e.target.value)}
+                      />
+                    </div>
+                    <Button 
+                      type="button" 
+                      size="sm" 
+                      variant="outline"
+                      onClick={geocodeClinicAddress}
+                      disabled={geoCodeStatus === 'loading'}
+                    >
+                      {geoCodeStatus === 'loading' ? (
+                        <span className={styles.btnSpinner}></span>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                          </svg>
+                          Find
+                        </>
+                      )}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      size="sm" 
+                      variant="ghost"
+                      onClick={() => { 
+                        if (deviceCoords.latitude !== null) {
+                          setForm((prev) => ({ 
+                            ...prev, 
+                            latitude: String(deviceCoords.latitude), 
+                            longitude: String(deviceCoords.longitude), 
+                            location_override_confirmed: false 
+                          }));
+                        }
+                      }}
+                      disabled={deviceCoords.latitude === null || geoStatus === 'detecting'}
+                    >
+                      {geoStatus === 'detecting' ? (
+                        <span className={styles.btnSpinner}></span>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
+                          </svg>
+                          Use My Location
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  {/* Status messages */}
+                  {geoCodeStatus === 'loading' && (
+                    <p className={styles.statusMessage}>
+                      <span className={styles.statusSpinner}></span>
+                      Resolving clinic address coordinates...
+                    </p>
+                  )}
+                  {geoCodeStatus === 'done' && (
+                    <p className={`${styles.statusMessage} ${styles.statusSuccess}`}>
+                      ✓ Address resolved successfully!
+                    </p>
+                  )}
+                  {geoCodeStatus === 'error' && (
+                    <p className={`${styles.statusMessage} ${styles.statusError}`}>
+                      Could not resolve address. Enter coordinates manually or try a different address.
+                    </p>
+                  )}
+
+                  {/* Coordinates display */}
+                  {(form.latitude && form.longitude) && (
+                    <div className={styles.coordsDisplay}>
+                      <div className={styles.coordsGrid}>
+                        <div className={styles.coordItem}>
+                          <span className={styles.coordLabel}>Latitude</span>
+                          <input
+                            type="number"
+                            step="0.000001"
+                            className={styles.coordInput}
+                            value={form.latitude}
+                            onChange={(e) => updateField('latitude')(e.target.value)}
+                          />
+                        </div>
+                        <div className={styles.coordItem}>
+                          <span className={styles.coordLabel}>Longitude</span>
+                          <input
+                            type="number"
+                            step="0.000001"
+                            className={styles.coordInput}
+                            value={form.longitude}
+                            onChange={(e) => updateField('longitude')(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <p className={styles.coordsHint}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                        Location coordinates have been set
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Manual entry if no coords yet */}
+                  {(!form.latitude || !form.longitude) && (
+                    <div className={styles.manualEntry}>
+                      <p className={styles.manualHint}>Or enter coordinates manually:</p>
+                      <div className={styles.grid2}>
+                        <FormInput 
+                          label="Latitude" 
+                          type="number" 
+                          step="0.000001" 
+                          value={form.latitude} 
+                          onChange={updateField('latitude')} 
+                          error={errors.location?.[0]} 
+                          placeholder="e.g., 19.076090" 
+                          required 
+                        />
+                        <FormInput 
+                          label="Longitude" 
+                          type="number" 
+                          step="0.000001" 
+                          value={form.longitude} 
+                          onChange={updateField('longitude')} 
+                          error={errors.location?.[0]} 
+                          placeholder="e.g., 72.877426" 
+                          required 
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Location override warning */}
+                {errors.location_override_confirmed && (
+                  <span className={styles.fieldError}>{errors.location_override_confirmed[0]}</span>
+                )}
+                <label className={styles.checkboxRow}>
+                  <input 
+                    type="checkbox" 
+                    checked={form.location_override_confirmed} 
+                    onChange={updateField('location_override_confirmed')} 
+                  />
+                  <span>I confirm the clinic location is intentionally different from my current device location.</span>
+                </label>
               </div>
 
-              {errors.location_override_confirmed && <span className={styles.fieldError}>{errors.location_override_confirmed[0]}</span>}
-              <label className={styles.checkboxRow}>
-                <input type="checkbox" checked={form.location_override_confirmed} onChange={updateField('location_override_confirmed')} />
-                <span>I confirm the clinic location is intentionally different from my current device location.</span>
-              </label>
-
-              <div className={styles.grid2}>
-                <FormInput label="Consultation Fee (₹)" type="number" min="0" value={form.consultation_fee} onChange={updateField('consultation_fee')} error={errors.consultation_fee?.[0]} placeholder="e.g., 800" required />
-                <FormInput label="Home Visit Fee (₹)" type="number" min="0" value={form.home_visit_fee} onChange={updateField('home_visit_fee')} error={errors.home_visit_fee?.[0]} placeholder="e.g., 1200" />
+              {/* Address Details */}
+              <div className={styles.addressDetails}>
+                <h4 className={styles.addressHeader}>Address Details</h4>
+                <FormInput 
+                  label="Street Address" 
+                  as="textarea" 
+                  rows={2} 
+                  value={form.clinic_address} 
+                  onChange={updateField('clinic_address')} 
+                  error={errors.clinic_address?.[0]} 
+                  placeholder="Full street address" 
+                  required 
+                />
+                <div className={styles.grid2}>
+                  <FormInput 
+                    label="City" 
+                    value={form.city} 
+                    onChange={updateField('city')} 
+                    error={errors.city?.[0]} 
+                    placeholder="e.g., Mumbai" 
+                    required 
+                  />
+                  <FormInput 
+                    label="State" 
+                    value={form.state} 
+                    onChange={updateField('state')} 
+                    error={errors.state?.[0]} 
+                    placeholder="e.g., Maharashtra" 
+                  />
+                </div>
+                <FormInput 
+                  label="Postal Code" 
+                  value={form.postal_code} 
+                  onChange={updateField('postal_code')} 
+                  error={errors.postal_code?.[0]} 
+                  placeholder="e.g., 400001" 
+                />
               </div>
+
+              {/* Consultation Fees */}
+              <div className={styles.feesSection}>
+                <h4 className={styles.feesHeader}>Consultation Fees</h4>
+                <div className={styles.grid2}>
+                  <FormInput 
+                    label="In-Clinic Consultation (₹)" 
+                    type="number" 
+                    min="0" 
+                    value={form.consultation_fee} 
+                    onChange={updateField('consultation_fee')} 
+                    error={errors.consultation_fee?.[0]} 
+                    placeholder="e.g., 800" 
+                    required 
+                  />
+                  <FormInput 
+                    label="Home Visit Fee (₹)" 
+                    type="number" 
+                    min="0" 
+                    value={form.home_visit_fee} 
+                    onChange={updateField('home_visit_fee')} 
+                    error={errors.home_visit_fee?.[0]} 
+                    placeholder="e.g., 1200 (optional)" 
+                  />
+                </div>
+              </div>
+
               {geoStatus === 'detecting' && <p className={styles.sectionHint}>Detecting your location...</p>}
               {geoStatus === 'done' && <p className={styles.sectionHint}>Device location detected.</p>}
               {geoStatus === 'error' && <p className={styles.sectionHint}>Location detection unavailable.</p>}
