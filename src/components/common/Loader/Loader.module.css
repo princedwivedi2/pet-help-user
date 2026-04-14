@@ -1,8 +1,8 @@
 .spinner {
   border-radius: 50%;
   border-style: solid;
-  border-color: var(--color-border-light);
-  border-top-color: var(--color-primary);
+  border-color: var(--color-fog);
+  border-top-color: var(--color-clay);
   animation: spin 0.65s linear infinite;
 }
 

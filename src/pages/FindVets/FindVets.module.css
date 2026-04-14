@@ -28,7 +28,7 @@
   right: -10%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(184, 111, 63, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -100,7 +100,7 @@
   justify-content: center;
   gap: 8px;
   color: var(--color-primary);
-  box-shadow: 0 20px 60px rgba(249, 115, 22, 0.15);
+  box-shadow: 0 20px 60px rgba(184, 111, 63, 0.15);
 }
 
 .heroImagePlaceholder svg {
@@ -818,7 +818,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  background: linear-gradient(135deg, #fef3c7, #fff7ed);
+  background: linear-gradient(135deg, #f9f4ee, #efe7dd);
   padding: 24px 32px;
   border-radius: var(--radius-xl);
   margin: 40px var(--content-padding) 20px;

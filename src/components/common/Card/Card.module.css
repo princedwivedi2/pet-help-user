@@ -1,9 +1,9 @@
 .card {
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.78);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid rgba(36, 32, 29, 0.09);
   box-shadow: var(--shadow-card);
-  transition: all var(--transition-base);
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
 }
 
 .card.clickable {
@@ -12,6 +12,7 @@
 
 .card.clickable:hover {
   box-shadow: var(--shadow-card-hover);
+  border-color: rgba(184, 111, 63, 0.16);
   transform: translateY(-2px);
 }
 
@@ -21,42 +22,46 @@
 
 .header {
   padding: 18px 22px;
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid rgba(36, 32, 29, 0.08);
 }
 
 .heading {
-  font-size: var(--font-md);
-  font-weight: 700;
-  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: 0.01em;
 }
 
 .body {
   padding: 22px;
 }
 
+/* ── Stat card ── */
 .stat {
-  background: var(--color-surface);
+  background: rgba(255, 255, 255, 0.78);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid rgba(36, 32, 29, 0.09);
   box-shadow: var(--shadow-card);
   padding: 22px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  transition: all var(--transition-base);
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
 }
 
 .stat:hover {
   box-shadow: var(--shadow-card-hover);
+  border-color: rgba(184, 111, 63, 0.16);
   transform: translateY(-2px);
 }
 
 .statIcon {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-lg);
   background: var(--color-primary-light);
-  color: var(--color-primary);
+  color: var(--color-clay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,14 +78,15 @@
   font-size: var(--font-xs);
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   font-weight: 600;
 }
 
 .statValue {
+  font-family: var(--font-display);
   font-size: var(--font-2xl);
-  font-weight: 800;
-  color: var(--color-text);
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .statSub {

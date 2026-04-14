@@ -33,7 +33,7 @@
 }
 
 .amount {
-  color: var(--primary, #f97316);
+  color: var(--color-clay, #b86f3f);
   font-size: 20px;
 }
 

@@ -68,12 +68,12 @@
   background: var(--gradient-warm);
   padding: 13px 28px;
   border-radius: var(--radius-full);
-  box-shadow: 0 3px 12px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 3px 12px rgba(184, 111, 63, 0.25);
   transition: all var(--transition-fast);
 }
 
 .primaryLink:hover {
-  box-shadow: 0 5px 20px rgba(249, 115, 22, 0.35);
+  box-shadow: 0 5px 20px rgba(184, 111, 63, 0.35);
   transform: translateY(-1px);
 }
 

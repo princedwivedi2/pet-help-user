@@ -1,7 +1,7 @@
 .tabs {
   display: flex;
-  gap: 4px;
-  border-bottom: 2px solid var(--color-border-light);
+  gap: 2px;
+  border-bottom: 1px solid rgba(36, 32, 29, 0.1);
   margin-bottom: 28px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -13,31 +13,33 @@
 }
 
 .tab {
-  padding: 11px 18px;
+  padding: 10px 18px;
   font-size: var(--font-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-text-muted);
-  border-bottom: 2.5px solid transparent;
-  margin-bottom: -2px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   transition: color var(--transition-fast), border-color var(--transition-fast);
   display: flex;
   align-items: center;
   gap: 7px;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
 .tab:hover {
-  color: var(--color-text);
+  color: var(--color-text-secondary);
 }
 
 .active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
+  color: var(--color-clay);
+  border-bottom-color: var(--color-clay);
+  font-weight: 600;
 }
 
 .count {
   font-size: var(--font-xs);
-  background: var(--color-surface-warm);
+  background: var(--color-fog);
   color: var(--color-text-muted);
   padding: 2px 8px;
   border-radius: var(--radius-full);
@@ -46,5 +48,5 @@
 
 .active .count {
   background: var(--color-primary-light);
-  color: var(--color-primary);
+  color: var(--color-clay);
 }

@@ -5,11 +5,11 @@
   border-radius: var(--radius-full);
   white-space: nowrap;
   line-height: 1;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
 }
 
 .sm {
-  font-size: var(--font-xs);
+  font-size: 0.68rem;
   padding: 3px 10px;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .default {
-  background: var(--color-surface-warm);
+  background: var(--color-fog);
   color: var(--color-text-secondary);
 }
 
@@ -30,12 +30,12 @@
 
 .warning {
   background: var(--color-warning-light);
-  color: #92400e;
+  color: #7a4a10;
 }
 
 .danger {
   background: var(--color-danger-light);
-  color: #991b1b;
+  color: #8b1a10;
 }
 
 .info {

@@ -46,14 +46,14 @@
 }
 
 .unread:hover {
-  background: rgba(249, 115, 22, 0.08);
+  background: rgba(184, 111, 63, 0.08);
 }
 
 .iconWrap {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--color-surface-warm);
+  background: var(--color-fog);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,8 +62,8 @@
 }
 
 .unread .iconWrap {
-  background: var(--gradient-warm);
-  color: var(--color-text-inverse);
+  background: var(--color-clay);
+  color: var(--color-cream);
 }
 
 .itemContent {

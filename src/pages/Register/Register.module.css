@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ede9fe 0%, #fef3c7 50%, #f3e8ff 100%);
+  background: linear-gradient(135deg, #efe7dd 0%, #f7f3ed 50%, #e8e4dc 100%);
   position: relative;
   overflow: hidden;
   padding: 48px;
@@ -24,7 +24,7 @@
   width: 450px;
   height: 450px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(79, 105, 87, 0.1) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -36,7 +36,7 @@
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(184, 111, 63, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -54,9 +54,10 @@
 }
 
 .illustrationTitle {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-ink);
   margin-bottom: 8px;
 }
 
@@ -89,8 +90,8 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f97316, #ea580c);
-  color: white;
+  background: var(--gradient-warm);
+  color: var(--color-cream);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,20 +106,20 @@
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
-  background: radial-gradient(ellipse 80% 80% at 60% 50%, #f5f3ff 0%, var(--color-bg) 70%);
+  background: radial-gradient(ellipse 80% 80% at 60% 50%, #f9f4ee 0%, var(--color-bg) 70%);
   overflow-y: auto;
 }
 
 .formInner {
   width: 100%;
   max-width: 440px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(36, 32, 29, 0.1);
   border-radius: var(--radius-2xl);
   padding: 44px 40px;
-  box-shadow: 0 8px 40px rgba(28, 25, 23, 0.07), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  box-shadow: 0 8px 40px rgba(22, 20, 18, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
 .header {
@@ -133,30 +134,34 @@
 }
 
 .logoMark {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-lg);
-  background: var(--gradient-warm);
-  color: var(--color-text-inverse);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  color: var(--color-cream);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-base);
-  font-weight: 800;
-  box-shadow: 0 2px 12px rgba(249, 115, 22, 0.3);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
 }
 
 .logoText {
-  font-size: var(--font-xl);
-  font-weight: 800;
-  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-ink);
 }
 
 .title {
-  font-size: var(--font-2xl);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
   margin-bottom: 6px;
-  color: var(--color-text);
+  color: var(--color-ink);
 }
 
 .subtitle {
@@ -167,9 +172,9 @@
 
 .error {
   background: var(--color-danger-light);
-  color: #991b1b;
+  color: #8b1a10;
   padding: 12px 16px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   font-size: var(--font-sm);
   font-weight: 500;
   margin-bottom: 22px;
@@ -180,8 +185,8 @@
 }
 
 .passwordHint {
-  font-size: var(--font-xs, 11px);
-  color: var(--color-text-muted, #6b7280);
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
@@ -191,7 +196,7 @@
 }
 
 .link {
-  color: var(--color-primary);
+  color: var(--color-clay);
   font-weight: 600;
 }
 
@@ -199,7 +204,7 @@
   text-decoration: underline;
 }
 
-/* ── Mobile: stack, hide illustration ── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .illustrationPanel {
     display: none;

@@ -47,15 +47,15 @@
 }
 
 .filterActive {
-  background: var(--gradient-warm);
-  color: var(--color-text-inverse);
+  background: var(--color-ink);
+  color: var(--color-cream);
   border-color: transparent;
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+  box-shadow: 0 2px 8px rgba(22, 20, 18, 0.2);
 }
 
 .filterActive:hover {
-  background: var(--gradient-warm);
-  color: var(--color-text-inverse);
+  background: var(--color-dusk);
+  color: var(--color-cream);
 }
 
 .list {

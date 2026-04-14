@@ -1,93 +1,107 @@
 /* ═══════════════════════════════════════════════════
-   PetSathi — Warm, Friendly, Consumer App
-   Coral-Amber palette · Soft shapes · Playful
+   The Hearth — PetSathi App
+   Ink · Dusk · Clay · Moss · Amber · Cream palette
+   Sora body · Cormorant Garamond display
    ═══════════════════════════════════════════════════ */
 
 :root {
-  /* ── Brand — Warm Coral ── */
-  --color-primary: #f97316;
-  --color-primary-hover: #ea580c;
-  --color-primary-light: #fff7ed;
-  --color-primary-subtle: #fffbf5;
-  --color-primary-glow: rgba(249, 115, 22, 0.12);
-  --color-primary-dark: #c2410c;
+  /* ── Core Brand Palette ── */
+  --color-ink:   #161412;
+  --color-dusk:  #24201d;
+  --color-fog:   #ebe6de;
+  --color-clay:  #b86f3f;
+  --color-amber: #d89d62;
+  --color-moss:  #4f6957;
+  --color-cream: #f7f3ed;
 
-  /* ── Accent — Soft Violet ── */
-  --color-accent: #8b5cf6;
-  --color-accent-light: #f5f3ff;
+  /* ── Primary = Clay ── */
+  --color-primary:       #b86f3f;
+  --color-primary-hover: #a05233;
+  --color-primary-light: #f5e8d8;
+  --color-primary-subtle:#faf4ee;
+  --color-primary-glow:  rgba(184, 111, 63, 0.14);
+  --color-primary-dark:  #7a4a28;
+
+  /* ── Accent = Moss ── */
+  --color-accent:       #4f6957;
+  --color-accent-light: rgba(79, 105, 87, 0.1);
 
   /* ── Surfaces — Warm cream ── */
-  --color-bg: #fefcf9;
-  --color-surface: #ffffff;
-  --color-surface-hover: #fefaf6;
-  --color-surface-warm: #fdf8f3;
+  --color-bg:           #f7f3ed;
+  --color-surface:      #ffffff;
+  --color-surface-hover:#f9f5f0;
+  --color-surface-warm: #f7f3ed;
 
   /* ── Borders ── */
-  --color-border: #e8e0d8;
-  --color-border-light: #f3ede6;
+  --color-border:       #ebe6de;
+  --color-border-light: rgba(36, 32, 29, 0.09);
 
-  /* ── Text — Warm grays ── */
-  --color-text: #1c1917;
-  --color-text-secondary: #57534e;
-  --color-text-muted: #a8a29e;
-  --color-text-inverse: #ffffff;
+  /* ── Text — Warm darks ── */
+  --color-text:           #161412;
+  --color-text-secondary: #4a3e35;
+  --color-text-muted:     #7c6d62;
+  --color-text-inverse:   #f7f3ed;
 
   /* ── Semantic ── */
-  --color-success: #16a34a;
-  --color-success-light: #f0fdf4;
-  --color-success-dark: #15803d;
-  --color-warning: #d97706;
-  --color-warning-light: #fffbeb;
-  --color-danger: #dc2626;
-  --color-danger-light: #fef2f2;
-  --color-info: #2563eb;
-  --color-info-light: #eff6ff;
+  --color-success:       #3a7d58;
+  --color-success-light: #edf7f1;
+  --color-success-dark:  #2a5e3f;
+  --color-warning:       #c07d28;
+  --color-warning-light: #fdf4e3;
+  --color-danger:        #c0392b;
+  --color-danger-light:  #fdf0ee;
+  --color-info:          #2c5fa3;
+  --color-info-light:    #eaf1fb;
 
   /* ── Gradients ── */
-  --gradient-warm: linear-gradient(135deg, #f97316, #fb923c);
-  --gradient-hero: linear-gradient(135deg, #fdf8f3, #fff7ed, #fefcf9);
-  --gradient-sunset: linear-gradient(135deg, #f97316, #f59e0b);
-  --gradient-soft: linear-gradient(135deg, #fef3c7, #fff7ed, #fce7f3);
+  --gradient-warm:    linear-gradient(135deg, #b86f3f, #d89d62);
+  --gradient-hero:    radial-gradient(circle at 20% 10%, #fff8ef 0%, #f7f3ed 35%, #efe7dd 100%);
+  --gradient-sunset:  linear-gradient(135deg, #b86f3f, #c8853a);
+  --gradient-soft:    linear-gradient(135deg, #f7f3ed, #efe7dd, #fdf9f5);
+  --gradient-dark:    linear-gradient(135deg, #161412, #24201d);
 
   /* ── Layout ── */
-  --navbar-height: 64px;
-  --max-width: 1120px;
-  --content-padding: 24px;
+  --navbar-height:    64px;
+  --max-width:        1120px;
+  --content-padding:  24px;
 
-  /* ── Radius — Extra rounded for friendliness ── */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  /* ── Radius — Refined, backend-style ── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
+  --radius-3xl:  24px;
   --radius-full: 9999px;
 
-  /* ── Shadows — Warm tones ── */
-  --shadow-xs: 0 1px 2px rgba(28, 25, 23, 0.03);
-  --shadow-sm: 0 2px 6px rgba(28, 25, 23, 0.04);
-  --shadow-md: 0 4px 16px rgba(28, 25, 23, 0.06);
-  --shadow-lg: 0 8px 32px rgba(28, 25, 23, 0.08);
-  --shadow-overlay: 0 20px 60px rgba(28, 25, 23, 0.12);
-  --shadow-glow: 0 0 24px rgba(249, 115, 22, 0.12);
-  --shadow-card: 0 2px 8px rgba(28, 25, 23, 0.04), 0 0 0 1px rgba(28, 25, 23, 0.02);
-  --shadow-card-hover: 0 8px 24px rgba(28, 25, 23, 0.08), 0 0 0 1px rgba(249, 115, 22, 0.08);
+  /* ── Shadows — Ink-toned ── */
+  --shadow-xs:         0 1px 2px rgba(22, 20, 18, 0.04);
+  --shadow-sm:         0 2px 6px rgba(22, 20, 18, 0.06);
+  --shadow-md:         0 4px 16px rgba(22, 20, 18, 0.08);
+  --shadow-lg:         0 8px 32px rgba(22, 20, 18, 0.1);
+  --shadow-overlay:    0 20px 60px rgba(22, 20, 18, 0.15);
+  --shadow-glow:       0 0 24px rgba(184, 111, 63, 0.16);
+  --shadow-soft:       0 25px 70px rgba(22, 20, 18, 0.14);
+  --shadow-card:       0 2px 8px rgba(22, 20, 18, 0.05), 0 0 0 1px rgba(36, 32, 29, 0.07);
+  --shadow-card-hover: 0 8px 28px rgba(22, 20, 18, 0.1),  0 0 0 1px rgba(184, 111, 63, 0.14);
 
   /* ── Typography ── */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-xs: 0.75rem;
-  --font-sm: 0.8125rem;
+  --font-family:   'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display:  'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-xs:   0.72rem;
+  --font-sm:   0.8125rem;
   --font-base: 0.875rem;
-  --font-md: 1rem;
-  --font-lg: 1.125rem;
-  --font-xl: 1.25rem;
-  --font-2xl: 1.5rem;
-  --font-3xl: 2rem;
-  --font-4xl: 2.5rem;
+  --font-md:   1rem;
+  --font-lg:   1.125rem;
+  --font-xl:   1.25rem;
+  --font-2xl:  1.5rem;
+  --font-3xl:  2rem;
+  --font-4xl:  2.5rem;
 
   /* ── Motion ── */
-  --transition-fast: 150ms ease;
-  --transition-base: 200ms ease;
-  --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast:   150ms ease;
+  --transition-base:   220ms ease;
+  --transition-spring: 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ── Reset ── */
@@ -110,8 +124,9 @@ body {
   font-family: var(--font-family);
   font-size: var(--font-base);
   color: var(--color-text);
-  background-color: var(--color-bg);
-  line-height: 1.6;
+  background: radial-gradient(circle at 20% 10%, #fff8ef 0%, #f7f3ed 40%, #efe7dd 100%) fixed;
+  background-attachment: fixed;
+  line-height: 1.65;
   min-height: 100vh;
 }
 
@@ -150,22 +165,23 @@ table {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.25;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--color-text);
   letter-spacing: -0.01em;
 }
 
 /* ── Focus ── */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-clay);
   outline-offset: 2px;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -173,7 +189,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: var(--color-fog);
   border-radius: 3px;
 }
 
@@ -183,8 +199,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Selection ── */
 ::selection {
-  background: var(--color-primary-light);
-  color: var(--color-primary-dark);
+  background: var(--color-clay);
+  color: var(--color-cream);
 }
 
 /* ── Responsive root ── */

@@ -6,7 +6,7 @@
 
 .main {
   flex: 1;
-  padding: 36px var(--content-padding);
+  padding: 32px var(--content-padding);
   max-width: var(--max-width);
   width: 100%;
   margin: 0 auto;
@@ -14,15 +14,16 @@
 
 @media (max-width: 768px) {
   .main {
-    padding: 20px 16px 100px;
+    padding: 18px 16px 100px;
   }
 }
 
+/* ── Email verify banner — amber-tinted to match palette ── */
 .verifyBanner {
-  background: #fffbeb;
-  border-bottom: 1px solid #fcd34d;
-  color: #92400e;
-  font-size: var(--font-sm, 13px);
+  background: var(--color-warning-light);
+  border-bottom: 1px solid rgba(192, 125, 40, 0.25);
+  color: #7a4a10;
+  font-size: var(--font-sm);
   padding: 10px var(--content-padding);
   display: flex;
   align-items: center;
@@ -32,26 +33,27 @@
 
 .verifyBannerSent {
   font-weight: 600;
-  color: #166534;
+  color: var(--color-success-dark);
 }
 
 .verifyBannerBtn {
   background: none;
-  border: 1px solid #92400e;
-  color: #92400e;
-  border-radius: var(--radius-sm, 4px);
-  padding: 2px 10px;
-  font-size: var(--font-sm, 13px);
+  border: 1px solid rgba(192, 125, 40, 0.45);
+  color: #7a4a10;
+  border-radius: var(--radius-sm);
+  padding: 3px 12px;
+  font-size: var(--font-sm);
   cursor: pointer;
   white-space: nowrap;
+  transition: all var(--transition-fast);
 }
 
 .verifyBannerBtn:hover {
-  background: #92400e;
-  color: #fff;
+  background: #7a4a10;
+  color: var(--color-cream);
 }
 
 .verifyBannerBtn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
