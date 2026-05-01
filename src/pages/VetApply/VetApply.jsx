@@ -4,6 +4,7 @@ import api from '../../services/api';
 import FormInput from '../../components/common/FormInput/FormInput';
 import FileUpload from '../../components/common/FileUpload/FileUpload';
 import Button from '../../components/common/Button/Button';
+import LocationPicker from './LocationPicker';
 import styles from './VetApply.module.css';
 
 const SPECIES_OPTIONS = [
@@ -104,7 +105,6 @@ export default function VetApply() {
   const [deviceCoords, setDeviceCoords] = useState({ latitude: null, longitude: null });
   const [geoStatus, setGeoStatus] = useState('idle');
   const [currentStep, setCurrentStep] = useState(1);
-  const [geoCodeStatus, setGeoCodeStatus] = useState('idle');
   const [stepSuccess, setStepSuccess] = useState({});
   const [showValidationSummary, setShowValidationSummary] = useState(false);
 
@@ -245,25 +245,32 @@ export default function VetApply() {
     setDocFiles((prev) => ({ ...prev, [type]: files }));
   };
 
-  // ─── Geocoding ───
-  const geocodeClinicAddress = async () => {
-    const query = [form.clinic_address, form.city, form.state, form.postal_code].filter(Boolean).join(', ').trim();
-    if (!query) { setErrors((prev) => ({ ...prev, clinic_address: ['Enter clinic address details first.'] })); return; }
-    try {
-      setGeoCodeStatus('loading');
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      if (!Array.isArray(data) || data.length === 0) {
-        setGeoCodeStatus('error');
-        setErrors((prev) => ({ ...prev, location: ['Could not geocode this address. Verify address or enter coordinates manually.'] }));
-        return;
-      }
-      setForm((prev) => ({ ...prev, latitude: Number(data[0].lat).toFixed(6), longitude: Number(data[0].lon).toFixed(6), location_override_confirmed: false }));
-      setGeoCodeStatus('done');
-    } catch {
-      setGeoCodeStatus('error');
-      setErrors((prev) => ({ ...prev, location: ['Address geocoding failed. Enter coordinates manually.'] }));
-    }
+  // ─── Location ───
+  const handleLocationChange = (lat, lng) => {
+    setForm((prev) => ({
+      ...prev,
+      latitude: String(lat),
+      longitude: String(lng),
+      location_override_confirmed: false,
+    }));
+    setErrors((prev) => {
+      if (!prev.location && !prev.latitude && !prev.longitude) return prev;
+      const next = { ...prev };
+      delete next.location;
+      delete next.latitude;
+      delete next.longitude;
+      return next;
+    });
+  };
+
+  const handleAddressFound = ({ address, city, state, postal_code }) => {
+    setForm((prev) => ({
+      ...prev,
+      clinic_address: address || prev.clinic_address,
+      city: city || prev.city,
+      state: state || prev.state,
+      postal_code: postal_code || prev.postal_code,
+    }));
   };
 
   // ─── Validation ───
@@ -566,158 +573,20 @@ export default function VetApply() {
                   Clinic Location
                 </h4>
                 <p className={styles.locationHint}>
-                  Search for your clinic address, use your current location, or click on the map to set the exact coordinates.
+                  Search for your clinic address, use your current location, or click anywhere on the map
+                  to drop a pin. Drag the pin to fine-tune — city, state and postal code fill in automatically.
                 </p>
 
-                {/* Import and use LocationPicker - we'll use a simpler inline version */}
-                <div className={styles.locationPicker}>
-                  <div className={styles.locationSearchRow}>
-                    <div className={styles.locationSearchField}>
-                      <span className={styles.locationSearchIcon}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="11" cy="11" r="8"/>
-                          <path d="m21 21-4.35-4.35"/>
-                        </svg>
-                      </span>
-                      <input
-                        type="text"
-                        className={styles.locationSearchInput}
-                        placeholder="Search for clinic address..."
-                        value={form.clinic_address}
-                        onChange={(e) => updateField('clinic_address')(e.target.value)}
-                      />
-                    </div>
-                    <Button 
-                      type="button" 
-                      size="sm" 
-                      variant="outline"
-                      onClick={geocodeClinicAddress}
-                      disabled={geoCodeStatus === 'loading'}
-                    >
-                      {geoCodeStatus === 'loading' ? (
-                        <span className={styles.btnSpinner}></span>
-                      ) : (
-                        <>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="m21 21-4.35-4.35"/>
-                          </svg>
-                          Find
-                        </>
-                      )}
-                    </Button>
-                    <Button 
-                      type="button" 
-                      size="sm" 
-                      variant="ghost"
-                      onClick={() => { 
-                        if (deviceCoords.latitude !== null) {
-                          setForm((prev) => ({ 
-                            ...prev, 
-                            latitude: String(deviceCoords.latitude), 
-                            longitude: String(deviceCoords.longitude), 
-                            location_override_confirmed: false 
-                          }));
-                        }
-                      }}
-                      disabled={deviceCoords.latitude === null || geoStatus === 'detecting'}
-                    >
-                      {geoStatus === 'detecting' ? (
-                        <span className={styles.btnSpinner}></span>
-                      ) : (
-                        <>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
-                          </svg>
-                          Use My Location
-                        </>
-                      )}
-                    </Button>
-                  </div>
+                <LocationPicker
+                  latitude={form.latitude}
+                  longitude={form.longitude}
+                  onLocationChange={handleLocationChange}
+                  onAddressFound={handleAddressFound}
+                />
 
-                  {/* Status messages */}
-                  {geoCodeStatus === 'loading' && (
-                    <p className={styles.statusMessage}>
-                      <span className={styles.statusSpinner}></span>
-                      Resolving clinic address coordinates...
-                    </p>
-                  )}
-                  {geoCodeStatus === 'done' && (
-                    <p className={`${styles.statusMessage} ${styles.statusSuccess}`}>
-                      ✓ Address resolved successfully!
-                    </p>
-                  )}
-                  {geoCodeStatus === 'error' && (
-                    <p className={`${styles.statusMessage} ${styles.statusError}`}>
-                      Could not resolve address. Enter coordinates manually or try a different address.
-                    </p>
-                  )}
-
-                  {/* Coordinates display */}
-                  {(form.latitude && form.longitude) && (
-                    <div className={styles.coordsDisplay}>
-                      <div className={styles.coordsGrid}>
-                        <div className={styles.coordItem}>
-                          <span className={styles.coordLabel}>Latitude</span>
-                          <input
-                            type="number"
-                            step="0.000001"
-                            className={styles.coordInput}
-                            value={form.latitude}
-                            onChange={(e) => updateField('latitude')(e.target.value)}
-                          />
-                        </div>
-                        <div className={styles.coordItem}>
-                          <span className={styles.coordLabel}>Longitude</span>
-                          <input
-                            type="number"
-                            step="0.000001"
-                            className={styles.coordInput}
-                            value={form.longitude}
-                            onChange={(e) => updateField('longitude')(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <p className={styles.coordsHint}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10"/>
-                          <path d="M12 16v-4M12 8h.01"/>
-                        </svg>
-                        Location coordinates have been set
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Manual entry if no coords yet */}
-                  {(!form.latitude || !form.longitude) && (
-                    <div className={styles.manualEntry}>
-                      <p className={styles.manualHint}>Or enter coordinates manually:</p>
-                      <div className={styles.grid2}>
-                        <FormInput 
-                          label="Latitude" 
-                          type="number" 
-                          step="0.000001" 
-                          value={form.latitude} 
-                          onChange={updateField('latitude')} 
-                          error={errors.location?.[0]} 
-                          placeholder="e.g., 19.076090" 
-                          required 
-                        />
-                        <FormInput 
-                          label="Longitude" 
-                          type="number" 
-                          step="0.000001" 
-                          value={form.longitude} 
-                          onChange={updateField('longitude')} 
-                          error={errors.location?.[0]} 
-                          placeholder="e.g., 72.877426" 
-                          required 
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {errors.location?.[0] && (
+                  <span className={styles.fieldError}>{errors.location[0]}</span>
+                )}
 
                 {/* Location override warning */}
                 {errors.location_override_confirmed && (

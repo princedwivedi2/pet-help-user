@@ -97,6 +97,14 @@
   background: var(--color-primary-light);
 }
 
+.suggestionStatus {
+  padding: 12px 14px;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.45;
+}
+
 .suggestionItem svg {
   color: var(--color-text-muted);
   flex-shrink: 0;
@@ -236,6 +244,108 @@
 
 .coordHint svg {
   color: var(--color-text-muted);
+}
+
+/* Paste coords / Google Maps URL escape hatch */
+.paste {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  background: #fafafa;
+}
+
+.pasteSummary {
+  padding: 10px 0;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pasteSummary::-webkit-details-marker {
+  display: none;
+}
+
+.pasteSummary::before {
+  content: '▸';
+  color: var(--color-primary);
+  transition: transform 0.15s;
+}
+
+.paste[open] .pasteSummary::before {
+  transform: rotate(90deg);
+}
+
+.pasteBody {
+  padding: 4px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pasteHint {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.pasteHint code {
+  font-family: monospace;
+  font-size: 11px;
+  background: var(--color-primary-light);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--color-primary);
+}
+
+.pasteRow {
+  display: flex;
+  gap: 8px;
+}
+
+.pasteInput {
+  flex: 1;
+  padding: 9px 12px;
+  font-size: var(--font-sm);
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.pasteInput:focus {
+  border-color: var(--color-primary);
+}
+
+.pasteBtn {
+  padding: 9px 14px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pasteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pasteError {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--color-danger);
+  line-height: 1.45;
 }
 
 /* Responsive */

@@ -84,6 +84,135 @@ function ClickHandler({ onClick }) {
   return null;
 }
 
+// India bounding box:
+//   Nominatim viewbox: lon_min,lat_max,lon_max,lat_min
+//   Photon bbox:       lon_min,lat_min,lon_max,lat_max
+const INDIA_VIEWBOX = '68.0,37.5,97.5,6.0';
+const INDIA_BBOX = '68.0,6.0,97.5,37.5';
+
+async function nominatimSearch(query) {
+  const base = 'https://nominatim.openstreetmap.org/search';
+  const common = new URLSearchParams({
+    format: 'json',
+    addressdetails: '1',
+    limit: '8',
+    'accept-language': 'en-IN,en',
+    q: query,
+  });
+
+  const mapItem = (item) => ({
+    display: item.display_name.split(',').slice(0, 4).join(','),
+    lat: parseFloat(item.lat),
+    lng: parseFloat(item.lon),
+    full: item.display_name,
+    address: item.address || null,
+  });
+
+  try {
+    const res = await fetch(`${base}?${common.toString()}&countrycodes=in`);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data.map(mapItem);
+  } catch { /* fall through */ }
+
+  try {
+    const res = await fetch(`${base}?${common.toString()}&viewbox=${INDIA_VIEWBOX}&bounded=0`);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data.map(mapItem);
+  } catch { /* fall through */ }
+
+  return [];
+}
+
+// Photon (komoot) — free, no key. Often indexes POIs Nominatim misses.
+async function photonSearch(query) {
+  try {
+    const url =
+      `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}` +
+      `&lang=en&limit=8&bbox=${INDIA_BBOX}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const features = Array.isArray(data?.features) ? data.features : [];
+
+    return features
+      .filter((f) => {
+        const cc = f.properties?.countrycode;
+        return !cc || cc === 'IN';
+      })
+      .map((f) => {
+        const p = f.properties || {};
+        const [lng, lat] = f.geometry?.coordinates || [NaN, NaN];
+        const displayParts = [p.name, p.street, p.city || p.county, p.state].filter(Boolean);
+        const fullParts = [
+          p.name, p.housenumber, p.street, p.district, p.suburb,
+          p.city || p.county, p.state, p.postcode, p.country,
+        ].filter(Boolean);
+        return {
+          display: displayParts.slice(0, 4).join(', '),
+          lat,
+          lng,
+          full: fullParts.join(', '),
+          address: {
+            house_number: p.housenumber,
+            road: p.street,
+            neighbourhood: p.district,
+            suburb: p.suburb,
+            city: p.city || p.county || p.locality,
+            state: p.state,
+            postcode: p.postcode,
+          },
+        };
+      })
+      .filter((r) => Number.isFinite(r.lat) && Number.isFinite(r.lng) && r.display);
+  } catch {
+    return [];
+  }
+}
+
+async function combinedSearch(query) {
+  const [n, p] = await Promise.allSettled([nominatimSearch(query), photonSearch(query)]);
+  const merged = [];
+  if (n.status === 'fulfilled') merged.push(...n.value);
+  if (p.status === 'fulfilled') merged.push(...p.value);
+
+  const deduped = [];
+  for (const r of merged) {
+    const near = deduped.find(
+      (d) => Math.abs(d.lat - r.lat) < 0.0005 && Math.abs(d.lng - r.lng) < 0.0005
+    );
+    if (!near) deduped.push(r);
+  }
+  return deduped.slice(0, 10);
+}
+
+async function nominatimReverse(lat, lng) {
+  const url =
+    `https://nominatim.openstreetmap.org/reverse` +
+    `?format=json&addressdetails=1&zoom=18` +
+    `&accept-language=en-IN,en&lat=${lat}&lon=${lng}`;
+  const res = await fetch(url);
+  return res.json();
+}
+
+// Extract lat/lng from raw coords or the most common Google Maps URL shapes.
+function parseCoordsOrMapsUrl(text) {
+  const trimmed = String(text || '').trim();
+  if (!trimmed) return null;
+
+  const plain = trimmed.match(/^(-?\d+(?:\.\d+)?)\s*[,\s]\s*(-?\d+(?:\.\d+)?)$/);
+  if (plain) return { lat: parseFloat(plain[1]), lng: parseFloat(plain[2]) };
+
+  const at = trimmed.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (at) return { lat: parseFloat(at[1]), lng: parseFloat(at[2]) };
+
+  const qp = trimmed.match(/[?&](?:q|query|ll|center|viewpoint)=(-?\d+(?:\.\d+)?)[,%]\s*(-?\d+(?:\.\d+)?)/);
+  if (qp) return { lat: parseFloat(qp[1]), lng: parseFloat(qp[2]) };
+
+  const d34 = trimmed.match(/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/);
+  if (d34) return { lat: parseFloat(d34[1]), lng: parseFloat(d34[2]) };
+
+  return null;
+}
+
 export default function LocationPicker({
   latitude,
   longitude,
@@ -95,8 +224,12 @@ export default function LocationPicker({
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [searchDone, setSearchDone] = useState(false);
   const [detecting, setDetecting] = useState(false);
   const [reverseGeocoding, setReverseGeocoding] = useState(false);
+  const [pasteInput, setPasteInput] = useState('');
+  const [pasteError, setPasteError] = useState('');
   const searchTimeout = useRef(null);
   const mapRef = useRef(null);
 
@@ -117,26 +250,20 @@ export default function LocationPicker({
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
 
     if (query.length >= 3) {
+      setSearching(true);
+      setSearchDone(false);
+      setShowSuggestions(true);
       searchTimeout.current = setTimeout(async () => {
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=in`
-          );
-          const data = await res.json();
-          setSuggestions(data.map(item => ({
-            display: item.display_name.split(',').slice(0, 4).join(','),
-            lat: parseFloat(item.lat),
-            lng: parseFloat(item.lon),
-            full: item.display_name
-          })));
-          setShowSuggestions(true);
-        } catch {
-          setSuggestions([]);
-        }
+        const results = await combinedSearch(query);
+        setSuggestions(results);
+        setSearching(false);
+        setSearchDone(true);
       }, 300);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setSearching(false);
+      setSearchDone(false);
     }
   };
 
@@ -147,17 +274,31 @@ export default function LocationPicker({
     setSearchQuery(suggestion.display);
     setShowSuggestions(false);
     setSuggestions([]);
-    
-    // Parse address components
-    if (onAddressFound) {
-      const parts = suggestion.full.split(',').map(p => p.trim());
+    setSearchDone(false);
+
+    if (!onAddressFound) return;
+
+    // Prefer structured address from Nominatim (addressdetails=1) —
+    // much more reliable than splitting display_name for Indian addresses.
+    if (suggestion.address) {
+      const a = suggestion.address;
       onAddressFound({
-        address: parts.slice(0, 2).join(', '),
-        city: parts.find(p => /\b(city|town|village)\b/i.test(p)) || parts[parts.length - 4] || '',
-        state: parts[parts.length - 2] || '',
-        postal_code: parts.find(p => /^\d{6}$/.test(p)) || ''
+        address: [a.house_number, a.road, a.neighbourhood, a.suburb].filter(Boolean).join(', '),
+        city: a.city || a.town || a.village || a.municipality || a.county || '',
+        state: a.state || '',
+        postal_code: a.postcode || '',
       });
+      return;
     }
+
+    // Fallback for cached suggestions without structured data.
+    const parts = suggestion.full.split(',').map((p) => p.trim());
+    onAddressFound({
+      address: parts.slice(0, 2).join(', '),
+      city: parts.find((p) => /\b(city|town|village)\b/i.test(p)) || parts[parts.length - 4] || '',
+      state: parts[parts.length - 2] || '',
+      postal_code: parts.find((p) => /^\d{6}$/.test(p)) || '',
+    });
   };
 
   // Use current location
@@ -178,17 +319,14 @@ export default function LocationPicker({
         // Reverse geocode
         setReverseGeocoding(true);
         try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-          );
-          const data = await res.json();
+          const data = await nominatimReverse(lat, lng);
           if (data.address) {
             const addr = data.address;
             setSearchQuery(data.display_name.split(',').slice(0, 3).join(','));
             if (onAddressFound) {
               onAddressFound({
-                address: [addr.road, addr.neighbourhood, addr.suburb].filter(Boolean).join(', '),
-                city: addr.city || addr.town || addr.village || '',
+                address: [addr.house_number, addr.road, addr.neighbourhood, addr.suburb].filter(Boolean).join(', '),
+                city: addr.city || addr.town || addr.village || addr.municipality || addr.county || '',
                 state: addr.state || '',
                 postal_code: addr.postcode || ''
               });
@@ -211,24 +349,21 @@ export default function LocationPicker({
   // Handle map click
   const handleMapClick = useCallback(async (lat, lng) => {
     if (disabled) return;
-    
+
     setPosition([lat, lng]);
     onLocationChange(lat.toFixed(6), lng.toFixed(6));
-    
+
     // Reverse geocode
     setReverseGeocoding(true);
     try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-      );
-      const data = await res.json();
+      const data = await nominatimReverse(lat, lng);
       if (data.address) {
         const addr = data.address;
         setSearchQuery(data.display_name.split(',').slice(0, 3).join(','));
         if (onAddressFound) {
           onAddressFound({
-            address: [addr.road, addr.neighbourhood, addr.suburb].filter(Boolean).join(', '),
-            city: addr.city || addr.town || addr.village || '',
+            address: [addr.house_number, addr.road, addr.neighbourhood, addr.suburb].filter(Boolean).join(', '),
+            city: addr.city || addr.town || addr.village || addr.municipality || addr.county || '',
             state: addr.state || '',
             postal_code: addr.postcode || ''
           });
@@ -243,6 +378,31 @@ export default function LocationPicker({
   const handleMarkerDrag = useCallback((lat, lng) => {
     handleMapClick(lat, lng);
   }, [handleMapClick]);
+
+  const handlePasteSubmit = () => {
+    setPasteError('');
+    const parsed = parseCoordsOrMapsUrl(pasteInput);
+    if (!parsed) {
+      if (/goo\.gl|maps\.app\.goo\.gl/.test(pasteInput)) {
+        setPasteError(
+          'Short Google links hide the coordinates. Open the link in a browser, then copy the full URL (with "@lat,lng") or the coordinates themselves.'
+        );
+      } else {
+        setPasteError('Paste coordinates like "28.1234, 80.5678" or a Google Maps URL that contains @lat,lng.');
+      }
+      return;
+    }
+    const { lat, lng } = parsed;
+    if (
+      !Number.isFinite(lat) || !Number.isFinite(lng) ||
+      Math.abs(lat) > 90 || Math.abs(lng) > 180
+    ) {
+      setPasteError('Those coordinates look out of range.');
+      return;
+    }
+    setPasteInput('');
+    handleMapClick(lat, lng);
+  };
 
   const defaultCenter = [20.5937, 78.9629]; // Center of India
   const center = position || defaultCenter;
@@ -271,10 +431,19 @@ export default function LocationPicker({
           />
           {reverseGeocoding && <div className={styles.spinner}></div>}
           
-          {/* Suggestions */}
-          {showSuggestions && suggestions.length > 0 && (
+          {/* Suggestions / searching / no-results */}
+          {showSuggestions && (searching || searchDone) && (
             <div className={styles.suggestions}>
-              {suggestions.map((s, i) => (
+              {searching && (
+                <div className={styles.suggestionStatus}>Searching India…</div>
+              )}
+              {!searching && suggestions.length === 0 && searchDone && (
+                <div className={styles.suggestionStatus}>
+                  No matches on OpenStreetMap. Try a pincode or landmark, click the map,
+                  or paste Google Maps coordinates below.
+                </div>
+              )}
+              {!searching && suggestions.map((s, i) => (
                 <button
                   key={i}
                   type="button"
@@ -349,6 +518,40 @@ export default function LocationPicker({
           </div>
         )}
       </div>
+
+      {/* Escape hatch: paste coords / Google Maps URL */}
+      <details className={styles.paste}>
+        <summary className={styles.pasteSummary}>
+          Can't find it? Paste Google Maps coordinates or a link
+        </summary>
+        <div className={styles.pasteBody}>
+          <p className={styles.pasteHint}>
+            In Google Maps, right-click your clinic and click the coordinates shown at the top
+            of the menu — they'll be copied to your clipboard. Paste them here. A full Google
+            Maps URL containing <code>@lat,lng</code> works too.
+          </p>
+          <div className={styles.pasteRow}>
+            <input
+              type="text"
+              className={styles.pasteInput}
+              placeholder="e.g. 28.6139, 77.2090"
+              value={pasteInput}
+              onChange={(e) => { setPasteInput(e.target.value); setPasteError(''); }}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handlePasteSubmit(); } }}
+              disabled={disabled}
+            />
+            <button
+              type="button"
+              className={styles.pasteBtn}
+              onClick={handlePasteSubmit}
+              disabled={disabled || !pasteInput.trim()}
+            >
+              Drop pin
+            </button>
+          </div>
+          {pasteError && <p className={styles.pasteError}>{pasteError}</p>}
+        </div>
+      </details>
 
       {/* Coordinates display */}
       {position && (
